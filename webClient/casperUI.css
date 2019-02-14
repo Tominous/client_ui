@@ -1,0 +1,102 @@
+
+* {                         /* clear browser-dependent defaults for all tags */
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;  /* everything but margin included in height and width */
+}
+
+/*------------------------------------------------*/
+
+html {
+   height: 100%;
+   width: 100%;
+}
+
+/*------------------------------------------------*/
+
+body {
+   margin: 10px;
+   height: 100%;
+   font: 11pt calibri;   /* are margin and border-radius inherited? */
+}
+
+/*-------- general rules sorted alphabetically below here ---------*/
+
+.flexRow {
+   display: flex;
+   flex-direction: row;           /* fill horizontally from left to right */
+}
+
+/*------------------------------------------------*/
+
+.flexColumn {
+   display: flex;
+   flex-direction: column;           /*  fill vertically from top to bottom */
+}
+
+/*------------------------------------------------*/
+
+.centerText {
+   /* center text horizontally and vertically (flex or not flex?) */
+}
+
+/*------------------------------------------------*/
+
+.textDisplay {
+   height: 2em;
+   min-width: 60px;
+}
+
+/*-------- element-specific rules sorted alphabetically below here ---------*/
+
+#chain {
+   display: flex;
+   flex-direction: row;           /* fill horizontally from left to right */
+   margin: 5px;
+}
+
+/*------------------------------------------------*/
+
+#deploy-buffer {
+   display: flex;
+   flex-direction: row;           /* fill horizontally from left to right */
+   margin: 5px;
+}
+
+/*------------------------------------------------*/
+
+.deploy {
+   height: 2em;
+   margin: 5px;
+   border-radius: 5px;
+   background: rgb( 255, 185, 95 );
+   /* center contents (deploy id) horizontally and vertically */
+}
+
+/*------------------------------------------------*/
+
+.block {
+   display: flex;
+   flex-direction: column;           /*  fill vertically from top to bottom */
+   margin: 5px;
+   border-radius: 5px;
+   background: rgb( 255, 185, 95 );
+}
+
+/*------------------------------------------------*/
+
+.heading {
+   display: flex;
+   flex-direction: row;    /*  fill horizontally from left to right */
+   margin: 5px;
+   border-radius: 5px;
+   background: rgb( 255, 185, 95 );
+}
+
+/*------------------------------------------------*/
+
+#control-panel {
+   display: flex;
+   flex-direction: column;           /*  fill vertically from top to bottom */
+   margin: 5px;
+}

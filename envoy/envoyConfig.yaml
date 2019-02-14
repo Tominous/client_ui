@@ -1,0 +1,46 @@
+# datatype specs can be found at https://www.envoyproxy.io/docs/envoy/v1.7.1/api-v2/api#envoy-api-reference
+# ":R" following a datatype means it's required
+# the top-level object is (config.bootstrap.v2.Bootstrap)
+
+admin:                                                           #(config.bootstrap.v2.Admin:R)
+   access_log_path: envoyLog.txt                                 #(string:R)
+   address:
+      socket_address: { address: 0.0.0.0, port_value: 9000 }   #(core.Address:R)
+
+static_resources:                      #(config.bootstrap.v2.Bootstrap.StaticResources)
+   listeners:                          #([Listener])
+   - name: rnodeWebListener            #(sting)
+     address:                          #(core.Address:R)
+        socket_address: { address: 0.0.0.0, port_value: 9001 }   #(core.Address) where a browser would connect
+     filter_chains:                    #([listener.FilterChain]:R)
+     - filters:                        #([listener.Filter])
+       - name: envoy.http_connection_manager   #(string:R) make downstream http, i.e. facing out from rnode cluster
+         config:                       #(config.filter.network.http_connection_manager.v2.HttpConnectionManager) type depends on value of name field
+            stat_prefix: rnodeWebFilter #(string:R) prepended to stats for this filter
+            codec_type: AUTO           #(config.filter.network.http_connection_manager.v2.HttpConnectionManager.CodecType) options: AUTO (default), HTTP1, HTTP2
+            route_config:              #(RouteConfiguration) required for static config
+               name: local_route       #(string)
+               virtual_hosts:          #([route.VirtualHost]) array of virtual hosts composing the route table; may need to add "cors" (route.CorsPolicy) to route.VirtualHost
+               - name: rnodeWebVHost   #(string:R)
+                 domains: [ "*" ]      #([string]:R) if this matches the host component of incoming url, route to this virtual host
+                 routes:               #([route.Route])
+                 - match: { prefix: "/" }        #(route.RouteMatch:R) inside "match", one of "prefix", "path", "regex" is required
+                                                                                                                                  # inside "match", can also match headers with "headers" (route.HeaderMatcher) and query params with "query_parameters" (route.QueryParameterMatcher)
+                   route: { cluster: rnodes }    #(route.routeAction) inside "route", one of "cluster", "cluster_header", "weighted_clusters" is required
+            http_filters:                        #([config.filter.network.http_connection_manager.v2.HttpFilter]) is filter order significant?
+            - name: envoy.grpc_json_transcoder   #(string:R)
+              config:                            #(config.filter.http.transcoder.v2.GrpcJsonTranscoder) type depends on value of name field
+                 proto_descriptor: casperMessageModDescSet.pb   #(string:R) name of file emitted by protoc using the --descriptor_set_out option
+                 match_incoming_request_route: true       #(bool) if false, match a fixed URL pattern determined by service and endpoint names in .proto file
+                                                                                                                                    # need additional pieces and steps when compiling the .proto file; see https://www.envoyproxy.io/docs/envoy/v1.7.1/configuration/http_filters/grpc_json_transcoder_filter
+                 services:                       #([string]:R) one element per service in .proto file that will be exposed
+                 - coop.rchain.casper.protocol.DeployService
+            - name: envoy.router       #(string:R)
+                                # other options for elements of the "http_filters" array: envoy.grpc_web, envoy.grpc_http1_bridge, envoy.cors
+
+   clusters:                           #([Cluster])
+   - name: rnodes                      #(string:R)
+     http2_protocol_options: { }       #(core.Http2ProtocolOptions) this is requireded to make upstream be http2; default config values used
+     connect_timeout: { seconds: 2 }   #(Duration:R) this is a protobuf datatype
+     hosts:                            #([core.Address])   this is deprecated in favor of ClusterLoadAssignment
+     - socket_address: { address: 0.0.0.0, port_value: 40401 }   #([core.Address]:R if static) rnode ip:port (one for internal and another for external?)
