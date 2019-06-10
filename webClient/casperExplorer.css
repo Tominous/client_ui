@@ -1,0 +1,62 @@
+
+* {                         /* clear browser-dependent defaults for all tags */
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;  /* padding and border (not margin) included in height and width */
+}
+
+/*------------------------------------------------*/
+
+html {
+   height: 100%;
+   width: 100%;
+}
+
+/*------------------------------------------------*/
+
+body {
+   display: flex;
+   margin: 10px;
+   height: 100%;
+}
+
+/*-------- general rules sorted alphabetically below here ---------*/
+
+#controls {
+   display: flex;
+   flex-direction: column;
+   background: rgb( 127, 127, 127 );
+   font: 12 pt calibri;
+   color: rgb( 255, 255, 255 );
+   margin: 10px;
+}
+
+.button {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+#main {
+
+}
+
+/*------------------------------------------------*/
+
+.flexColumn {
+   display: flex;
+   flex-direction: column;           /*  fill vertically from top to bottom */
+}
+
+/*------------------------------------------------*/
+
+.centerText {
+   /* center text horizontally and vertically (flex or not flex?) */
+}
+
+/*------------------------------------------------*/
+
+.textDisplay {
+   height: 2em;
+   min-width: 60px;
+}
