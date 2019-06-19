@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {grey400} from 'material-ui/styles/colors';
 import Data from '../data';
-import ContentCreate from 'material-ui/svg-icons/content/create';
 
 const styles = {
   toggleDiv: {
@@ -80,7 +79,8 @@ class Accounts extends Component {
       super(props);
       this.state = {
         isNew: false
-      }
+      };
+      this.newKey = this.newKey.bind(this);
   }
   componentDidMount() {
     for (let index = 0; index < document.getElementsByClassName('menu-button').length; index++) {
