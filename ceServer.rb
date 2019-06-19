@@ -45,7 +45,7 @@ configure {
    # the following override defaults for modular sinatra apps, i.e. those that subclass Sinatra::Base
    set( :app_file, __FILE__ )   # specifies root directory for the website (the directory containing this file)
    set( :run,      true     )   # start the default/internal web server after loading this sinatra app (webrick for ruby1.9+)
-   set( :logging,  true     )   # enable logging to stderr
+   # set( :logging,  true     )   # enable logging to stderr
 
    config = YAML.load_file( ARGV[ 0 ] || DEFAULT_CONFIG_FILE )   # TODO: check for valid config file format
 
@@ -54,11 +54,11 @@ configure {
       set( :port, config[ "serverPort"  ] )   # default port for sinatra is 4567
    end
 
-   set( :root,    config[ "projectRoot" ] )   # root directory for project files (for production mode; for development it's "root/public")
-   set( :store,   config[ "store"       ] )
-   set( :account, Base64.strict_encode64( Base16.decode16( config[ "masterAccount" ] ) ) )
+   set( :assetRoot, config[ "assetRoot" ] )   # root directory for project files (for production mode; for development it's "root/public")
+   set( :store,     config[ "storeRoot" ] + "/" + config[ "store" ] )
+   set( :account,   Base64.strict_encode64( Base16.decode16( config[ "masterAccount" ] ) ) )
 
-   @@store = YAML.load_file( config[ "store" ] )   # TODO: check store format correctness
+   @@store = YAML.load_file( settings.store )   # TODO: check store format correctness
 
    %w[ payment session ].each { | dir |
       if Dir.exists?( dir )
@@ -125,14 +125,14 @@ helpers {
 #--- 120 characters ----------------------------------------------------------------------------------------------------
 
 get( "/" ) {
-   send_file( settings.root + "/index.html" )
+   send_file( settings.assetRoot + "/index.html" )
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
 # support files at project level
 
 get( %r[(/(assets|images)/.+)] ) { | path, dir |
-   fname = settings.root + path
+   fname = settings.assetRoot + path
    send_file( fname )
 }
 
@@ -235,8 +235,7 @@ put( "/contract" ) {
 post( "/contract" ) {
    begin
       req   = JSON.parse( request.body.read )
-      valid = req.has_key?( "payment" ) && req.has_key?( "paymentArgs" ) &&
-              req.has_key?( "session" ) && req.has_key?( "sessionArgs" ) &&
+      valid = req.has_key?( "payment" ) && req.has_key?( "session" ) && req.has_key?( "account" )
       unless valid
          msg = "post /contract request missing one or more of 'payment', 'paymentArgs', 'session', 'sessionArgs'"
          raise( CEexcept.new( msg ) )
