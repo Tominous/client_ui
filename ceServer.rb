@@ -128,15 +128,6 @@ get( "/" ) {
    send_file( settings.assetRoot + "/index.html" )
 }
 
-#--- 120 characters ----------------------------------------------------------------------------------------------------
-# support files at project level
-
-get( %r[/(.+)] ) { | path |
-   fname = settings.assetRoot + "/" + path
-   print( "sending:#{ fname }:" )
-   send_file( fname )
-}
-
 get( "/store" ) {    # TEMP: for debug
    @@store.to_json
 }
@@ -161,6 +152,15 @@ get( "/data" ) {
    }
 
    payload.to_json
+}
+
+#--- 120 characters ----------------------------------------------------------------------------------------------------
+# support files at project level
+
+get( %r[/(.+)] ) { | path |             # anything other than /data
+   fname = settings.assetRoot + "/" + path
+   print( "sending:#{ fname }:" )
+   send_file( fname )
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
