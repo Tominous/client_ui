@@ -78,15 +78,3 @@ accounts:
     FXIRTpB2tKBeJnlv3vAfwioN/U+JeqfLHJPqyOigaSxS+MQhpTULy5Ye9AbGr+CU
     2A4Vzt+TIXs69V+iHgrEXg8VctqKGi1XCmQOkzj6YdUxiAzp/ck24oM=
     -----END RSA PRIVATE KEY-----
-payment:
-- name: payStub
-  file: payStub.wasm
-session:
-- name: incCloudCreator
-  file: creator.wasm
-- name: incCloudOriginator
-  file: originator.wasm
-- name: votingCreator
-  file: creator.wasm
-- name: votingVote
-  file: creator.wasm

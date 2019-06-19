@@ -43,19 +43,32 @@ DEFAULT_CONFIG_FILE = "ceConfig.yaml"
 
 configure {
    # the following override defaults for modular sinatra apps, i.e. those that subclass Sinatra::Base
-   # set( :bind,    "0.0.0.0" )   # comment out if server is being accessed from localhost
    set( :app_file, __FILE__ )   # specifies root directory for the website (the directory containing this file)
    set( :run,      true     )   # start the default/internal web server after loading this sinatra app (webrick for ruby1.9+)
    set( :logging,  true     )   # enable logging to stderr
 
    config = YAML.load_file( ARGV[ 0 ] || DEFAULT_CONFIG_FILE )   # TODO: check for valid config file format
 
-   # set( :port,    config[ "serverPort"  ] )   # default port for sinatra is 4567
+   if config[ "mode" ] == "remote"
+      set( :bind, "0.0.0.0" )                 # do not set if server is being accessed from localhost
+      set( :port, config[ "serverPort"  ] )   # default port for sinatra is 4567
+   end
+
    set( :root,    config[ "projectRoot" ] )   # root directory for project files (for production mode; for development it's "root/public")
    set( :store,   config[ "store"       ] )
    set( :account, Base64.strict_encode64( Base16.decode16( config[ "masterAccount" ] ) ) )
 
    @@store = YAML.load_file( config[ "store" ] )   # TODO: check store format correctness
+
+   %w[ payment session ].each { | dir |
+      if Dir.exists?( dir )
+         @@store[ dir ] = Dir.entries( dir ) - [ ".", ".." ]   # remove trailing ".*" ?
+      else
+         Dir.mkdir( dir )
+         @@store[ dir ] = [ ]
+         print( "\n>>> creating #{ dir } directory" )
+      end
+   }
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
@@ -65,7 +78,7 @@ helpers {
 
    #--- 120 characters -------------------------------------------------------------------------------------------------
 
-   def deploy( name, http, deploy, count )
+   def deploy( account, payment, paymentArgs, session, sessionArgs )   # deal with .wasmBas64 in filenames
 
       deploy = {
          user:      "",
@@ -200,17 +213,11 @@ put( "/contract" ) {
       raise( CEexcept.new( "put /contract request 'type' property must be 'payment' or 'session'" ) ) unless valid
 
       @@store[ req[ "type" ] ].delete_if { | element |
-         element[ "name" ] == req[ "name" ]
+         element == req[ "name" ]
       }
 
-      @@store[ req[ "type" ] ] << {
-         "name" => req[ "name" ],
-         "wasm" => req[ "wasm" ]
-      }
-
-      File.open( settings.store, "w" ) { | f |
-         YAML.dump( @@store, f )
-      }
+      File.write( req[ "type" ] + "/" + req[ "name" ] + ".wasmBase64", req[ "wasm" ] )   # overwrites any existing file; indicate overwrite in message?
+      @@store[ req[ "type" ] ] << req[ "name" ]
 
       {
          status:  true,
