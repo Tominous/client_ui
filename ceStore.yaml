@@ -1,0 +1,92 @@
+---
+accounts:
+- name: wanker jones
+  public: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxylWqLwj8MN1K3rMCo4Y
+    jjOhWZvvK54OwQd+1FuwStC3E7QvTdi8vrjot9L1wXAvLuGutSwu97fF6vkunQXD
+    vm2s1BtZqKJLknWLV4DVv5OFQB3clOoEgi2I3xatTzzF5URCrXhjuVPhcslBj6o9
+    PGjqXkoeHIgGjCfP0m4i/Pi1AOkApXKyMwnQ40z1aPOJWyTp2rit8adB6yPXSq4L
+    mbvrDLdIIqT/uwbvVVXSAYioOjWYLoKIX1M7umyDLcs39JByPduKRUz7/1A8goNx
+    U+tNGe0RwY1/8pUoRprlh/HnyeDaJZiGXHyCFTkGHFy3Oh9wKnHIWkU7a8RdUwK2
+    cwIDAQAB
+    -----END PUBLIC KEY-----
+  private: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEowIBAAKCAQEAxylWqLwj8MN1K3rMCo4YjjOhWZvvK54OwQd+1FuwStC3E7Qv
+    Tdi8vrjot9L1wXAvLuGutSwu97fF6vkunQXDvm2s1BtZqKJLknWLV4DVv5OFQB3c
+    lOoEgi2I3xatTzzF5URCrXhjuVPhcslBj6o9PGjqXkoeHIgGjCfP0m4i/Pi1AOkA
+    pXKyMwnQ40z1aPOJWyTp2rit8adB6yPXSq4LmbvrDLdIIqT/uwbvVVXSAYioOjWY
+    LoKIX1M7umyDLcs39JByPduKRUz7/1A8goNxU+tNGe0RwY1/8pUoRprlh/HnyeDa
+    JZiGXHyCFTkGHFy3Oh9wKnHIWkU7a8RdUwK2cwIDAQABAoIBAHuyMSCbubbPrvZS
+    Tmg/2QB5EL2XG/T7Ni6teRhr2hKdjxet0bOH6bKLJf8GB50dEDEN+nSL/J/ehA5s
+    tYbRDcI4XB9g3U7ffhB48RJn8loKRbiM03Op5SL1JQ1qCDouhLrgqokTPNzePCgO
+    16ljEqVyhB4L6qfN1EM4dts7jH+Q30V0HovxdvnerZToshrQ8g4eVpTH6rhTpip1
+    9vcCIYatgYi22WNktZ7u9HQ/8BE6eGo3CZsiedMDNxfC1izfALbeyKgyWarlsJbu
+    BVj2J/U8Mf96xMoAqqhvLJBPV5PtQNlSK+HKUeL2G5zcyqxb2sCd6tIBsioJd/PH
+    oYNseAECgYEA9q5NPtRxkdeCTdAr/pGEBGOSRvgdfBy+GT01M9T7vQAJaL/XoTRE
+    fldHAvJPqHLmoY+9WYV0oMPa69WLdSs1NAl3AkBl5N+54dUMcMV73kFQyEGdkVhD
+    Bc6SyQBeDGgOnd0Td0ZPsZ0VRTBQtR8J2kipDU6V7rY3dbGky39FJk8CgYEAzq93
+    tO9+sWSmqP1AuAbpzaCGu4UH4IWgHJ2nleTVkvj/vYgXYyS6gvoPf+N/5WyN1vA1
+    gPYPYgnHJECw3c+I2R03OgJSNoVgnWgPSnynxR0+f6Ozs4AzM9gsgRbEPr09uWFp
+    h5OsVHZ/ZdTayOG11lLq17CCdybmHLAQI97sSJ0CgYASUcF00AwbG5kWtEYAIshe
+    FxLu6FAwPmYzs6L21XNYht8sA0s9Mod/pnWkl2ApD1dnWihitJGDuufQKcywh+Ps
+    mGNZLHUkuSSxy8OfwFrBl7IrHQxZledsT/oAqWFSpIupV5ixe+xBMXw55iuoN8Tg
+    jBLZ5SMnVirqN6YYYrw86wKBgFfAlhGDEYZdlojvJXg8ry23txyMqcCA227q3Mk+
+    ZBNHlsUwr8VPRcTwSH5i591PjpUwXXcIgZV9U0ioEq/KOm78AYOmkqNFU7ThBoT4
+    kf6VoQBuT5CpoJOld5fDQ8Tjcf5wRm7imusteH+StOVPN3XstHqpHWtbX53UfrXM
+    IwPdAoGBAL4gSDmAUzuJBV/VjNOzp+JHLeSGdQR5kPBK0+OaoH90iDruzhj04x+H
+    N3Ga+Kk3Jr3VlP0hHkhxlP3tcuOSgic0x+Wr2xznYl5DiVhxzNtfoN9crk/DWoUt
+    HWKkfXvGQcblgYGKFRZTt5tODqNyQrBvBM3vZZj6BPj1bo1uoxh5
+    -----END RSA PRIVATE KEY-----
+- name: skankin pickle
+  public: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8xbNZa/SFj3LnVm3sHle
+    vGGmhMK9AMbWGmb8eEDSyXGfQsaGbvodhYMciaQsRI9qlkluJqY1/EPHg+wsW9MK
+    WIB47PnxmJMSC7Sr5t1ZpIJJ+v956/4beL/wP4IKYqfcTSsLtj8nLCw/xWgwm4On
+    VclPr7MbL2/eh4nuER2LTbjZePeQPKqQvM2WnHR3MDekvU/QZrl51p1PYc6hL8kv
+    3BWWTif9UtYnbE0zSC0XpW5wFJ0K/HKh+ZL3s6SeaHQPy51A3m6Mor3y9tPmy5Rd
+    91MPJb7gbIMFU6ijzy1i+kgK54GKM88bdcccnzEdKkBzGUsgxm+dzeLuNFWXDWtQ
+    yQIDAQAB
+    -----END PUBLIC KEY-----
+  private: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpQIBAAKCAQEA8xbNZa/SFj3LnVm3sHlevGGmhMK9AMbWGmb8eEDSyXGfQsaG
+    bvodhYMciaQsRI9qlkluJqY1/EPHg+wsW9MKWIB47PnxmJMSC7Sr5t1ZpIJJ+v95
+    6/4beL/wP4IKYqfcTSsLtj8nLCw/xWgwm4OnVclPr7MbL2/eh4nuER2LTbjZePeQ
+    PKqQvM2WnHR3MDekvU/QZrl51p1PYc6hL8kv3BWWTif9UtYnbE0zSC0XpW5wFJ0K
+    /HKh+ZL3s6SeaHQPy51A3m6Mor3y9tPmy5Rd91MPJb7gbIMFU6ijzy1i+kgK54GK
+    M88bdcccnzEdKkBzGUsgxm+dzeLuNFWXDWtQyQIDAQABAoIBAFlswQCwbluqPfZT
+    o+RysawhTC24qejYPLkXu7bNOf3LI6hf+eJndmbANcZYs8RA8hf5SWFEccWsdYAN
+    aMAa4cpu8I1U4VCcgd32h+p08V44Y9jHFOYA48BG862ZPBLQ55UnybYwg0uXt5n6
+    Wy9KfktrtDnRbKXFxJod3otDUBS1vRR5Xao1AuNrwp7+rJ5MGpcPsdqT8u3Em9wa
+    KwYu9cBhogfGTSJBNPMc79V+CbV0Lfe6zR51mGacy3iI5B6wmP4yoW2HnuX85R2w
+    EG/2iXOHOCKb0A1o/hGgH4U7Wl4PtNlt45g/JS2tiv2prcMrODhu9DKVruuetj7N
+    nnPAeZECgYEA/ML4mtd5f1hGerplaO+G/joqcgvAuVo96SbpMCeb/vLRLZJGd8HD
+    tBpqpPNn3TLN+ToJnZS81vo9Mb8owWyGOff+OfEPkVHbVGTfrsOgIYU3VRIUzeaH
+    sMaQnh8gM9XM4IFRCKiQpRUKhl80MCTlMk/5y8V7ge2CMd72JrPBJhUCgYEA9jQb
+    Pp/k05a5kTrjudYdnjpoGIPVYxmCXqw8uUllKVuc9mlUZJycVuFaGVUkt8Lp/hSj
+    1Z9SapySI2IYG0ws9GOBTKVuOak2LMFn58w/L/J3r6a9rXcdjx2sKJY1Io4k+gfe
+    X0QikulYiyFYv+egANtAGiv9yZy4mBZX2sZjQOUCgYEAujCVGNqo8RmBsV4k3Yu0
+    EQmfwqrNqLvE5z52f7Ztvvv3Am7B4e2lz8G11RRH6jVGbNRHyQCLqoBjG4YI65KZ
+    vZHkf6IHKbD2s9AqxX3tM0QCYnQTRykNwzZByXh8LDLN3ILlwk8JXdGGEz2GIADN
+    pKYtB+HM/QSL51iqUhAPs5ECgYEA7wF0dV35YOKQMIlPqwdN513h0fKhQzvvUIK5
+    zFGQ0A5smNV1pNpX9wt7UN5T78RbLVnSFj49XtuyDoFaz50qgvDaA5MRJw66VcZH
+    XUHtEVm7kJw4xF2/J0Dx8NCosmv1P3hGCot1WNMILsBnjJyJumsdloqgK4lltdby
+    4KH4lnUCgYEArHiG/XLhif/MXkaY4l71LuuK9YOTdO3XW2pouD9QCGpx2HkuG01z
+    FXIRTpB2tKBeJnlv3vAfwioN/U+JeqfLHJPqyOigaSxS+MQhpTULy5Ye9AbGr+CU
+    2A4Vzt+TIXs69V+iHgrEXg8VctqKGi1XCmQOkzj6YdUxiAzp/ck24oM=
+    -----END RSA PRIVATE KEY-----
+payment:
+- name: payStub
+  file: payStub.wasm
+session:
+- name: incCloudCreator
+  file: creator.wasm
+- name: incCloudOriginator
+  file: originator.wasm
+- name: votingCreator
+  file: creator.wasm
+- name: votingVote
+  file: creator.wasm

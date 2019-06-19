@@ -1,0 +1,7 @@
+
+projectRoot: "."
+serverPort:  80
+
+masterAccount: "3030303030303030303030303030303030303030"   # base16
+
+store: "ceStore.yaml"
