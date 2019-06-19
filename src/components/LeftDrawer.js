@@ -58,10 +58,6 @@ const LeftDrawer = (props) => {
     menuButton: {
       display: 'flex',
       justifyContent: 'center'
-    },
-    menuButton: {
-      display: 'flex',
-      justifyContent: 'center'
     }
   };
 
