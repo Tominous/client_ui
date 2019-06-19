@@ -131,8 +131,9 @@ get( "/" ) {
 #--- 120 characters ----------------------------------------------------------------------------------------------------
 # support files at project level
 
-get( %r[(/(assets|images)/.+)] ) { | path, dir |
-   fname = settings.assetRoot + path
+get( %r[/(.+)] ) { | path |
+   fname = settings.assetRoot + "/" + path
+   print( "sending:#{ fname }:" )
    send_file( fname )
 }
 
