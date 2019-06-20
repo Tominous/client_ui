@@ -11,7 +11,7 @@ const LeftDrawer = (props) => {
   const styles = {
     logo: {
       cursor: 'pointer',
-      fontSize: 22,
+      fontSize: 18,
       color: typography.textFullWhite,
       lineHeight: `${spacing.desktopKeylineIncrement}px`,
       fontWeight: typography.fontWeightLight,
@@ -21,7 +21,7 @@ const LeftDrawer = (props) => {
     },
     menuItem: {
       color: white,
-      fontSize: 11
+      fontSize: 18
     },
     avatar: {
       div: {
@@ -47,7 +47,7 @@ const LeftDrawer = (props) => {
     },
     getStarted: {
       backgroundColor: 'rgb( 236, 87, 72 )',
-      fontSize: 11,
+      fontSize: 18,
       padding: '7px 17px',
       borderRadius: 13,
       border: 'none',

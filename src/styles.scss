@@ -3,12 +3,12 @@
 $black: rgb(0,0,0);
 $black_40: rgba(0,0,0,0.4);
 html {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Calibri', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 body, h1, h2, h3, h4, h5, h6 {
-  font-size: 15px;
+  font-size: 18px;
   margin: 0;
 	line-height: 24px;
 }
@@ -36,7 +36,7 @@ a:hover {
 }
 
 .m-b-15 {
-  margin-bottom: 15px
+  margin-bottom: 18px
 }
 .menu-button {
   &:hover {
@@ -87,7 +87,7 @@ a:hover {
 	margin: auto;
 	padding: 0;
   border: 1px solid gray;
-  border-radius: 12px;
+  border-radius: 18px;
 	width: 40%;
 	box-shadow: 0 4px 8px 0 black,0 6px 20px 0 black;
 	animation-name: animatetop;
@@ -117,7 +117,7 @@ a:hover {
 .close {
 	color: white;
 	float: right;
-	font-size: 28px;
+	font-size: 18px;
 	font-weight: bold;
 	&:hover {
 		color: $black;
@@ -145,7 +145,7 @@ a:hover {
 }
 
 input {
-  font-size: 12px;
+  font-size: 18px;
   &:focus {
     outline: transparent;
   }

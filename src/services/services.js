@@ -18,7 +18,7 @@ export default class Services {
     }
 
     static storeContract(contractInfo) {
-        return Http.post('contract', contractInfo);
+        return Http.put('contract', contractInfo);
     }
 
     static deleteContract(contractInfo) {

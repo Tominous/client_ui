@@ -3,14 +3,14 @@ import {grey600} from 'material-ui/styles/colors';
 
 const styles = {
   navigation: {
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: typography.fontWeightLight,
     color: grey600,
     paddingBottom: 15,
     display: 'block'
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: typography.fontWeightLight,
     marginBottom: 20
   },

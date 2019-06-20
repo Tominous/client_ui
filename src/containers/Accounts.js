@@ -172,7 +172,6 @@ class Accounts extends Component {
     } else {
       this.setState({validationError: true});
     }
- 
   }
 
   deleteItem() {
@@ -185,7 +184,7 @@ class Accounts extends Component {
 
   newKey() {
     this.setState({newModal: true});
-    let modal = document.getElementById("myModal");
+    let modal = document.getElementById("create-account");
     let new_name = document.getElementById("new-name");
     modal.style.display = "block";
     new_name.focus();
@@ -209,7 +208,7 @@ class Accounts extends Component {
 
   closeModal() {
     this.setState({validationError: false});
-    var modal = document.getElementById("myModal");
+    var modal = document.getElementById("create-account");
     modal.style.display = "none";
   }
 
@@ -234,7 +233,7 @@ class Accounts extends Component {
               </div>
             )}
           </div>
-          <div id="myModal" className="modal">
+          <div id="create-account" className="modal">
             <div className="modal-content">
               <div className="modal-header">
                 <span className="close" onClick={this.closeModal}>&times;</span>
