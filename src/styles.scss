@@ -10,12 +10,16 @@ html {
 body, h1, h2, h3, h4, h5, h6 {
   font-size: 15px;
   margin: 0;
-  line-height: 24px;
+	line-height: 24px;
+}
+
+header {
+  background-color: #ffffff;
 }
 
 body {
   margin: 0;
-  background-color: #efefef;
+  background-color: #ffffff;
 }
 
 body, html, #app, #app > div{
