@@ -130,7 +130,7 @@ get( "/" ) {
 
 get( "/store" ) {    # TEMP: for debug
    @@store.to_json
-}x
+}
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
 # called onload to get app's persistent data
