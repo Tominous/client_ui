@@ -70,21 +70,50 @@ const styles = {
     justifyContent: 'space-between'
   },
   grayRow: {
-    backgroundColor: 'rgb( 127, 127, 127 )',
+    backgroundColor: 'rgb( 230, 236, 244 )',
     margin:10,
     display: 'flex',
     borderRadius: 5,
     justifyContent: 'space-between'    
   },
+  formItem: {
+    backgroundColor: 'rgb(252, 252, 252)',
+    margin:10,
+    display: 'flex',
+    borderRadius: 5,
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  input: {
+    padding: 6,
+    borderRadius: 6,
+    float: 'right',
+    height: 26,
+  },
 };
 
 class Contracts extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      payment: '',
+
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
 
   componentDidMount() {
     for (let index = 0; index < document.getElementsByClassName('menu-button').length; index++) {
       document.getElementsByClassName('menu-button')[index].classList.remove('active');
     }
     document.getElementsByClassName('menu-button')[2].classList.add('active');
+  }
+
+  handleChange(e) {
+    let val = {};
+    val[e.target.name] = e.target.value;
+    this.setState(val);
   }
 
   render() { 
@@ -140,8 +169,24 @@ class Contracts extends Component {
             <div className="btn" style={styles.columns.delete} onClick={this.deleteItem}>
               del       
             </div>
-          </div>   
+          </div>
         </div>
+      <div className="form content">
+        <div style={styles.formItem}>
+          <div style={styles.formLabel}>payment args</div>
+          <input style={styles.input} type="number" name="payment" value={this.state.payment} onChange={this.handleChange}/>
+        </div>
+        <div style={styles.formItem}>
+          <div style={styles.formLabel}>session args</div>
+          <input style={styles.input} type="session" name="payment" value={this.state.session} onChange={this.handleChange}/>
+        </div>
+        <div style={{...styles.formItem, justifyContent: 'center'}}>
+          <div className="btn" style={styles.keyButton} onClick={this.uploadKey}>
+            upload
+          </div>
+        </div>
+      </div>
+
       </div>
     );
   }
