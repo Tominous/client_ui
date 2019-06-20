@@ -130,7 +130,7 @@ get( "/" ) {
 
 get( "/store" ) {    # TEMP: for debug
    @@store.to_json
-}
+}x
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
 # called onload to get app's persistent data
@@ -157,8 +157,8 @@ get( "/data" ) {
 #--- 120 characters ----------------------------------------------------------------------------------------------------
 # support files at project level
 
-get( %r[/(.+)] ) { | path |             # anything other than /data
-   fname = settings.assetRoot + "/" + path
+get( %r[(/.+)] ) { | path |             # anything other than /data
+   fname = settings.assetRoot + path
    print( "sending:#{ fname }:" )
    send_file( fname )
 }
