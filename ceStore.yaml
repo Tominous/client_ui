@@ -352,19 +352,14 @@ accounts:
     9vaP5jk5b0w6uexv/5OAsqIYfb8+rlvI0nxC5tS7NMMRYCWxEG1zTKzW
     -----END RSA PRIVATE KEY-----
 payment:
-<<<<<<< HEAD
-- stub.wasmBase64
-- test.wasmBase64
-=======
 - 111111.wasmBase64
 - stub.wasmBase64
 - test.wasmBase64
-- uuuuudddd
->>>>>>> 858a8692f3cc369cbc825d4fbeaa58840ef4ce86
+- uuuuudddd.wasmBase64
 session:
 - gggg.wasmBase64
 - jhjhjhj.wasmBase64
 - rocks.wasmBase64
 - session test.wasmBase64
 - test.wasmBase64
-- uuuuu
+- uuuuu.wasmBase64

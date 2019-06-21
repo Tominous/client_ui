@@ -3,7 +3,6 @@
 # TODO: make rescue clauses capture all exception classes
 
 require "sinatra/base"
-require "net/http"
 require "json"
 require "yaml"
 require "base16"
@@ -76,51 +75,6 @@ configure {
 # methods available to all route bodies (define methods using standard def-end block)
 
 helpers {
-
-   #--- 120 characters -------------------------------------------------------------------------------------------------
-
-   def deploy( account, payment, paymentArgs, session, sessionArgs )   # deal with .wasmBas64 in filenames
-
-      deploy = {
-         user:      "",
-         address:   settings.masterAccount,
-         timestamp: ( Time.now.to_f * 1000.0 ).round,
-         session: {
-            code: settings.createSession,
-            args: "",
-         },
-         payment: {
-            code: settings.payment,
-            args: "",
-         },
-         gasLimit:      1000000000,
-         gasPrice:      0,
-         nonce:         0,
-         sigAlgorithm: "",
-         signature:    ""
-      }
-
-      response = http.send_request( "PUT", "/deploy", deploy.to_json )   # deploy create contract
-      print( ">> #{ name } deploy response: ", response.body )
-
-      if response.body.match( /"success": *true/ )
-
-         0.upto( count ) { | attempt |                   # iterate proposes due to round robin load balancer
-            if attempt == 2 * count
-               print( "**** #{ name } propose attempts exceeded" )
-               exit
-            end
-            response = http.send_request( "POST", "/block" )              # propose create contract
-            print( ">> #{ name } propose response (#{ attempt }): ", response.body ) if @@debug
-            break if response.body.match( /"success": *true/ )
-         }
-
-      else
-         print( "**** #{ name } deploy failed: ", response.body )
-      end
-   end
-
-   #--- 120 characters -------------------------------------------------------------------------------------------------
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
@@ -130,7 +84,6 @@ get( "/" ) {
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
-# called onload to get app's persistent data
 
 get( "/store" ) {     # TODO: remove when no longer needed for debug
    @@store.to_json
@@ -289,49 +242,6 @@ delete( "/contract" ) {
       {
          status:    true,
          message:   "success"
-      }.to_json
-
-   rescue CEexcept => except
-      print( "\n**** #{ except.message }: #{ req }\n" )   # print error message to console
-      [ 400, [ except.payload ] ]   # rack-compatible return value; the body (second) element must respond to each()
-   end
-}
-
-#--- 120 characters ----------------------------------------------------------------------------------------------------
-#
-post( "/contract" ) {
-   begin
-      req   = JSON.parse( request.body.read )
-      valid = req.has_key?( "payment" ) && req.has_key?( "session" ) && req.has_key?( "account" )
-      raise( CEexcept.new( "post /contract request missing one or more of 'payment', 'session', 'account'" ) ) unless valid
-      out = settings.store.read( req[ "keyPairId" ] )
-      raise( CEexcept.new( "keyPairId '#{ req[ "keyPairId" ] }' does not exist" ) ) unless out.status
-      out = deploy( out.public, :payment, [ ], :createAccount, [ req[ "balance" ] ] )
-      raise( CEexcept.new( out.msg ) ) unless out.status
-      {
-         status:    true,
-         message:   "account create deploy accepted"
-      }.to_json
-
-   rescue CEexcept => except
-      print( "\n**** #{ except.message }: #{ req }\n" )   # print error message to console
-      [ 400, [ except.payload ] ]   # rack-compatible return value; the body (second) element must respond to each()
-   end
-}
-
-#--- 120 characters ----------------------------------------------------------------------------------------------------
-
-get( "/query" ) {
-   begin
-      req   = JSON.parse( request.body.read )
-      valid = req.has_key?( "keyPairId" ) && req.has_key?( "balance" )
-      raise( CEexcept.new( "post /account request missing one or more of 'keyPairId', 'balance'" ) ) unless valid
-      out = settings.store.read( req[ "keyPairId" ] )
-      raise( CEexcept.new( "keyPairId '#{ req[ "keyPairId" ] }' does not exist" ) ) unless out.status
-      out = query( )
-      raise( CEexcept.new( out.msg ) ) unless out.status
-      {
-         result: out.result,
       }.to_json
 
    rescue CEexcept => except
