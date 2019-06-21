@@ -20,6 +20,7 @@ class CEexcept < StandardError
    attr_reader( :message, :payload )
 
    def initialize( message, payload = { } )
+      @message = message
       @payload = {
          status: false,
          message: message
@@ -128,7 +129,10 @@ get( "/" ) {
    send_file( settings.assetRoot + "/index.html" )
 }
 
-get( "/store" ) {    # TEMP: for debug
+#--- 120 characters ----------------------------------------------------------------------------------------------------
+# called onload to get app's persistent data
+
+get( "/store" ) {     # TODO: remove when no longer needed for debug
    @@store.to_json
 }
 
@@ -169,9 +173,7 @@ post( "/account" ) {
    begin
       req   = JSON.parse( request.body.read )
       valid = req.has_key?( "name" ) && req.has_key?( "balance" )
-      unless valid
-         raise( CEexcept.new( "post /account request missing one or more of 'name', 'balance'", { publicKey: "" } ) )
-      end
+      raise( CEexcept.new( "post /account request missing one or more of 'name', 'balance'", { publicKey: "" } ) ) unless valid
 
       @@store[ "accounts" ].delete_if { | element |
          element[ "name" ] == req[ "name" ]
@@ -212,15 +214,12 @@ delete( "/account" ) {
       valid = req.has_key?( "name" )
       raise( CEexcept.new( "delete /account request missing 'name'" ) ) unless valid
 
-      found = @@store[ "accounts" ].any? { | hash |
+      index = @@store[ "accounts" ].find_index { | hash |
          hash[ "name" ] == req[ "name" ]
       }
 
-      raise( CEexcept.new( "account '#{ req[ "name" ] }' does not exist" ) ) unless found
-
-      @@store[ "accounts" ].delete_if { | hash |
-         hash[ "name" ] == req[ "name" ]
-      }
+      raise( CEexcept.new( "account '#{ req[ "name" ] }' does not exist" ) ) if index.nil?
+      @@store[ "accounts" ].delete_at( index )
 
       File.open( settings.store, "w" ) { | f |
          YAML.dump( @@store, f )
@@ -271,15 +270,40 @@ put( "/contract" ) {
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
+# i think you can figure this one out on your own
+
+delete( "/contract" ) {
+   begin
+      req   = JSON.parse( request.body.read )
+      valid = req.has_key?( "name" ) && req.has_key?( "type" )
+      raise( CEexcept.new( "delete /account request missing one or more of 'name', 'type'" ) ) unless valid
+      valid = %w[ payment session ].include?( req[ "type" ] )
+      raise( CEexcept.new( "put /contract request 'type' property must be 'payment' or 'session'" ) ) unless valid
+      found = @@store[ req[ "type" ] ].delete( req[ "name" ] + ".wasmBase64" )
+      raise( CEexcept.new( "#{ req[ "type" ] } contract '#{ req[ "name" ] }' does not exist" ) ) if found.nil?
+
+      File.open( settings.store, "w" ) { | f |
+         YAML.dump( @@store, f )
+      }
+
+      {
+         status:    true,
+         message:   "success"
+      }.to_json
+
+   rescue CEexcept => except
+      print( "\n**** #{ except.message }: #{ req }\n" )   # print error message to console
+      [ 400, [ except.payload ] ]   # rack-compatible return value; the body (second) element must respond to each()
+   end
+}
+
+#--- 120 characters ----------------------------------------------------------------------------------------------------
 #
 post( "/contract" ) {
    begin
       req   = JSON.parse( request.body.read )
       valid = req.has_key?( "payment" ) && req.has_key?( "session" ) && req.has_key?( "account" )
-      unless valid
-         msg = "post /contract request missing one or more of 'payment', 'paymentArgs', 'session', 'sessionArgs'"
-         raise( CEexcept.new( msg ) )
-      end
+      raise( CEexcept.new( "post /contract request missing one or more of 'payment', 'session', 'account'" ) ) unless valid
       out = settings.store.read( req[ "keyPairId" ] )
       raise( CEexcept.new( "keyPairId '#{ req[ "keyPairId" ] }' does not exist" ) ) unless out.status
       out = deploy( out.public, :payment, [ ], :createAccount, [ req[ "balance" ] ] )

@@ -313,9 +313,8 @@ accounts:
     rHepzZmjkobuY1zsKk25GzFJJpLfdVXBY9OlZPsn8BjIX9Sn/yRk
     -----END RSA PRIVATE KEY-----
 payment:
-- 111111.wasmBase64
+- stub.wasmBase64
 - test.wasmBase64
-- stub
 session:
 - rocks.wasmBase64
 - session test.wasmBase64
