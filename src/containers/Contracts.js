@@ -234,10 +234,9 @@ class Contracts extends Component {
 
   deployContract() {
     if (this.state.paymentItem==''||this.state.sessionItem=='') {
-      // this.setState({validationError: true});
+      alert('payment and session contracts must be specified');
       return;
     }
-    let that = this;
     let contractInfo = {
         payment: this.state.paymentItem,
         paymentArgs: this.state.paymentArg,
@@ -246,7 +245,6 @@ class Contracts extends Component {
       };
       Services.deployContract(contractInfo)
       .then(function(res){
-        that.closeModal();
         console.log("result ===== ", res)
       })
   }
@@ -328,7 +326,7 @@ class Contracts extends Component {
                 </div>
                 <input hidden type="file" name="wasm" onChange={this.readWasm} id="wasm-file"/>
               </div>
-              {this.state.validationError&&<div style={{display: 'flex',justifyContent: 'center'}}><span className="validation">read specified file</span></div>}
+              {this.state.validationError&&<div style={{display: 'flex',justifyContent: 'center'}}><span className="validation">“name” and file must be specified</span></div>}
             </div>
             <div className="modal-footer">
               <div className="btn" style={styles.keyButton} onClick={this.createNewContract}>
