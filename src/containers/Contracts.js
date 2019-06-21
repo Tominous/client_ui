@@ -123,7 +123,13 @@ class Contracts extends Component {
       validationError: false,
       contractType: 'payment',
       newName: '',
-      wasmContent: ''
+      wasmContent: '',
+      paymentArg: '',
+      sessionArg: '',
+      paymentItem: '',
+      sessionItem: '',
+      paymentList: [],
+      sessionList: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.uploadPaymentContract = this.uploadPaymentContract.bind(this);
@@ -132,9 +138,21 @@ class Contracts extends Component {
     this.uploadFile = this.uploadFile.bind(this);
     this.createNewContract = this.createNewContract.bind(this);
     this.readWasm = this.readWasm.bind(this);
+    this.selectPayment = this.selectPayment.bind(this);
+    this.deployContract = this.deployContract.bind(this);
   }
 
   componentDidMount() {
+    let that = this;
+    Services.onload()
+    .then(function(res){
+      console.log("res", res);
+      that.setState({paymentList: res.payment, sessionList: res.session});
+    })
+    for (let index = 0; index < document.getElementsByClassName('menu-button').length; index++) {
+      document.getElementsByClassName('menu-button')[index].classList.remove('active');
+    }
+
     for (let index = 0; index < document.getElementsByClassName('menu-button').length; index++) {
       document.getElementsByClassName('menu-button')[index].classList.remove('active');
     }
@@ -199,13 +217,41 @@ class Contracts extends Component {
     .then(function(res){
       that.closeModal();
       console.log("result ===== ", res)
-      // let newValue = { name: accountInfo.name, publicKey: res.publicKey};
-      // that.state.keyList.push(newValue);
-      // that.setState({keyList: that.state.keyList});
+      if (res.status) {
+        if (that.state.contractType=="payment") {
+          that.state.paymentList.push(that.state.newName);   
+        } else {
+          that.state.sessionList.push(that.state.newName);   
+        }
+        that.setState({});
+      }
     }) 
   }
 
+  selectPayment(paymentName) {
+    alert(paymentName);
+  }
+
+  deployContract() {
+    if (this.state.paymentItem==''||this.state.sessionItem=='') {
+      // this.setState({validationError: true});
+      return;
+    }
+    let that = this;
+    let contractInfo = {
+        payment: this.state.paymentItem,
+        paymentArgs: this.state.paymentArg,
+        session: this.state.sessionItem,
+        sessionArgs: this.state.sessionArg
+      };
+      Services.deployContract(contractInfo)
+      .then(function(res){
+        that.closeModal();
+        console.log("result ===== ", res)
+      })
+  }
   render() { 
+    const {paymentList, sessionList} = this.state;
     return ( 
       <div style={styles.container}>
         <div style={styles.buttonRow} className="content">
@@ -217,22 +263,16 @@ class Contracts extends Component {
           </div>
         </div>
         <div style={styles.content} className="content">
-          <div style={styles.grayRow}>
+        {paymentList.map(paymentItem=>
+          <div style={{...styles.grayRow, backgroundColor: 'rgb( 242, 242, 242 )',}} className={paymentItem==this.state.paymentItem?'selected-payment':''} onClick={()=>this.setState({paymentItem: paymentItem})}>
             <div style={styles.columns.name}>
-              name
+              {paymentItem}
             </div>
             <div className="btn" style={styles.columns.delete} onClick={this.deleteItem}>
               del       
             </div>
-          </div>   
-          <div style={styles.grayRow}>
-            <div style={styles.columns.name}>
-              name
-            </div>
-            <div className="btn" style={styles.columns.delete} onClick={this.deleteItem}>
-              del       
-            </div>
-          </div>   
+          </div>            
+        )}
         </div>
         <div style={styles.buttonRow} className="content">
           <div style={styles.label}>
@@ -243,34 +283,29 @@ class Contracts extends Component {
           </div>
         </div>
         <div style={styles.content} className="content">
-          <div style={styles.grayRow}>
+        {sessionList.map(sessionItem=>
+           <div style={styles.grayRow} className={sessionItem==this.state.sessionItem?'selected-session':''} onClick={()=>this.setState({sessionItem: sessionItem})}>
             <div style={styles.columns.name}>
-              name
+              {sessionItem}
             </div>
             <div className="btn" style={styles.columns.delete} onClick={this.deleteItem}>
               del       
             </div>
-          </div>   
-          <div style={styles.grayRow}>
-            <div style={styles.columns.name}>
-              name
-            </div>
-            <div className="btn" style={styles.columns.delete} onClick={this.deleteItem}>
-              del       
-            </div>
-          </div>
+          </div>          
+        )}
+
         </div>
         <div className="form content">
           <div style={styles.formItem}>
             <div style={styles.formLabel}>payment args</div>
-            <input style={styles.input} type="number" name="payment" value={this.state.payment} onChange={this.handleChange}/>
+            <input style={styles.input} name="paymentArg" value={this.state.paymentArg} onChange={this.handleChange}/>
           </div>
           <div style={styles.formItem}>
             <div style={styles.formLabel}>session args</div>
-            <input style={styles.input} type="session" name="payment" value={this.state.session} onChange={this.handleChange}/>
+            <input style={styles.input} name="sessionArg" value={this.state.sessionArg} onChange={this.handleChange}/>
           </div>
           <div style={{...styles.formItem, justifyContent: 'center'}}>
-            <div className="btn" style={styles.keyButton} onClick={this.uploadContract}>
+            <div className="btn" style={styles.keyButton} onClick={this.deployContract}>
               deploy
             </div>
           </div>
