@@ -1,4 +1,5 @@
 
+# command line: optional single argument specifying yaml config file name
 # TODO: make rescue clauses capture all exception classes
 
 require "sinatra/base"
@@ -12,6 +13,7 @@ require "openssl"
 $\ = "\n"   # appended to output of print()
 
 #### 120 characters ####################################################################################################
+# wraps a frequently used error response including creation of the corresponding json
 
 class CEexcept < StandardError
 
@@ -39,30 +41,28 @@ DEFAULT_CONFIG_FILE = "ceConfig.yaml"
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
 # run once at sinatra startup before any http requests are processed
-# command line options: optional single argument specifying config.yaml file name
 
 configure {
    # the following override defaults for modular sinatra apps, i.e. those that subclass Sinatra::Base
    set( :app_file, __FILE__ )   # specifies root directory for the website (the directory containing this file)
    set( :run,      true     )   # start the default/internal web server after loading this sinatra app (webrick for ruby1.9+)
-   # set( :logging,  true     )   # enable logging to stderr
 
    config = YAML.load_file( ARGV[ 0 ] || DEFAULT_CONFIG_FILE )   # TODO: check for valid config file format
 
    if config[ "mode" ] == "remote"
-      set( :bind, "0.0.0.0" )                 # do not set if server is being accessed from localhost
+      set( :bind, "0.0.0.0" )                 # do not set if server is being accessed at localhost
       set( :port, config[ "serverPort"  ] )   # default port for sinatra is 4567
    end
 
-   set( :assetRoot, config[ "assetRoot" ] )   # root directory for project files (for production mode; for development it's "root/public")
-   set( :store,     config[ "storeRoot" ] + "/" + config[ "store" ] )
+   set( :assetRoot, config[ "assetRoot" ] )   # root directory for css, js, images, etc.
+   set( :store,     config[ "storeRoot" ] + "/" + config[ "store" ] )   # TODO: replace this with S3
    set( :account,   Base64.strict_encode64( Base16.decode16( config[ "masterAccount" ] ) ) )
 
-   @@store = YAML.load_file( settings.store )   # TODO: check store format correctness
+   @@store = YAML.load_file( settings.store )
 
-   %w[ payment session ].each { | dir |
+   %w[ payment session ].each { | dir |       # load current contents of contract libraries
       if Dir.exists?( dir )
-         @@store[ dir ] = Dir.entries( dir ) - [ ".", ".." ]   # remove trailing ".*" ?
+         @@store[ dir ] = Dir.entries( dir ) - [ ".", ".." ]   # TODO: remove trailing ".*" from filenames?
       else
          Dir.mkdir( dir )
          @@store[ dir ] = [ ]
@@ -146,8 +146,9 @@ get( "/data" ) {
    }
 
    %w[ payment session ].each { | element |
-      payload[ element ] = @@store[ element ].map { | hash |
-         hash[ "name" ]
+      payload[ element ] = @@store[ element ].map { | contractFile |
+         contractName = contractFile.match( /(.+)\.wasmBase64/ )
+         ( contractName.nil? ) ? contractFile : contractName[ 1 ]
       }
    }
 
@@ -155,15 +156,14 @@ get( "/data" ) {
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
-# support files at project level
+# assets: css, js, images, etc.
 
-get( %r[(/.+)] ) { | path |             # anything other than /data
-   fname = settings.assetRoot + path
-   print( "sending:#{ fname }:" )
-   send_file( fname )
+get( %r[(/.+)] ) { | path |                 # get anything other than / or /data
+   send_file( settings.assetRoot + path )   # path includes leading /
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
+# generate new key pair and create new account (currently does not create accounts on the node)
 
 post( "/account" ) {
    begin
@@ -204,6 +204,41 @@ post( "/account" ) {
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
+# i think you can figure this one out on your own
+
+delete( "/account" ) {
+   begin
+      req   = JSON.parse( request.body.read )
+      valid = req.has_key?( "name" )
+      raise( CEexcept.new( "delete /account request missing 'name'" ) ) unless valid
+
+      found = @@store[ "accounts" ].any? { | hash |
+         hash[ "name" ] == req[ "name" ]
+      }
+
+      raise( CEexcept.new( "account '#{ req[ "name" ] }' does not exist" ) ) unless found
+
+      @@store[ "accounts" ].delete_if { | hash |
+         hash[ "name" ] == req[ "name" ]
+      }
+
+      File.open( settings.store, "w" ) { | f |
+         YAML.dump( @@store, f )
+      }
+
+      {
+         status:    true,
+         message:   "success"
+      }.to_json
+
+   rescue CEexcept => except
+      print( "\n**** #{ except.message }: #{ req }\n" )   # print error message to console
+      [ 400, [ except.payload ] ]   # rack-compatible return value; the body (second) element must respond to each()
+   end
+}
+
+#--- 120 characters ----------------------------------------------------------------------------------------------------
+# store contract in contract library
 
 put( "/contract" ) {
    begin
@@ -217,8 +252,12 @@ put( "/contract" ) {
          element == req[ "name" ]
       }
 
-      File.write( req[ "type" ] + "/" + req[ "name" ] + ".wasmBase64", req[ "wasm" ] )   # overwrites any existing file; indicate overwrite in message?
+      File.write( "#{ req[ "type" ] }/#{ req[ "name" ] }.wasmBase64", req[ "wasm" ] )   # overwrites any existing file; indicate overwrite in message?
       @@store[ req[ "type" ] ] << req[ "name" ]
+
+      File.open( settings.store, "w" ) { | f |
+         YAML.dump( @@store, f )
+      }
 
       {
          status:  true,
@@ -232,7 +271,7 @@ put( "/contract" ) {
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
-
+#
 post( "/contract" ) {
    begin
       req   = JSON.parse( request.body.read )
