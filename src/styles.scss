@@ -154,6 +154,14 @@ div .validation {
   color: red
 }
 
+.selected-payment {
+	background-color: rgb(212, 231, 243)!important;
+}
+
+.selected-session {
+	background-color: rgb(230, 219, 225)!important;
+}
+
 @media screen and (max-width: 600px)  {
   .content {
     width: 90%;
