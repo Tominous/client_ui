@@ -52,7 +52,6 @@ const LeftDrawer = (props) => {
       borderRadius: 13,
       border: 'none',
       color: 'white',
-      fontWeight: 'bold',
       margin: 31
     },
     menuButton: {

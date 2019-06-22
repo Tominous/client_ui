@@ -14,6 +14,12 @@ class App extends React.Component {
     };
   }
 
+  componentWillMount() {
+    if (window.location.pathname!="/") {
+      window.location.href="/";
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.width !== nextProps.width) {
       this.setState({navDrawerOpen: nextProps.width === LARGE});
@@ -63,4 +69,4 @@ App.propTypes = {
   width: PropTypes.number
 };
 
-export default withWidth()(App);
+export default withWidth() (App);

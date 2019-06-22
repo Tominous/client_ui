@@ -9,8 +9,8 @@ export default class Services {
         return Http.put(`key`, keyInfo);
     }
 
-    static deleteKey(keyInfo) {
-        return Http.delete('key', keyInfo);
+    static deleteAccount(keyInfo) {
+        return Http.delete('account', keyInfo);
     }
 
     static createAccount(accountInfo) {

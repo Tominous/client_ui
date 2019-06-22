@@ -15,6 +15,7 @@ class Landing extends Component {
     Services.onload()
     .then(function(res){
       that.setState({accounts: res.accounts});
+      localStorage.setItem("data", JSON.stringify(res));
     }) 
     for (let index = 0; index < document.getElementsByClassName('menu-button').length; index++) {
       document.getElementsByClassName('menu-button')[index].classList.remove('active');

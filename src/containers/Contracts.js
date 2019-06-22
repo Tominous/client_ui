@@ -15,13 +15,7 @@ const styles = {
       padding: '10px',
       color: 'rgb( 89, 89, 89 )',
     },
-    view: {
-      width: '15%',
-      padding: '10px',
-      color: 'rgb( 89, 89, 89 )',
-    },
     delete: {
-      width: '15%',
       padding: '10px',
       color: 'rgb( 89, 89, 89 )',
     }
@@ -64,7 +58,8 @@ const styles = {
     padding: '10px',
     borderRadius: '11px',
     margin: '5px',
-    color: 'rgb( 89, 89, 89 )'
+    color: 'rgb( 89, 89, 89 )',
+    fontWeight: 'bold'
   },
   buttonRow: {
     display: 'flex',
@@ -128,8 +123,11 @@ class Contracts extends Component {
       sessionArg: '',
       paymentItem: '',
       sessionItem: '',
-      paymentList: [],
-      sessionList: []
+      data: {
+              accounts: [],
+              payment: [],
+              session: []
+            }
     };
     this.handleChange = this.handleChange.bind(this);
     this.uploadPaymentContract = this.uploadPaymentContract.bind(this);
@@ -143,16 +141,8 @@ class Contracts extends Component {
   }
 
   componentDidMount() {
-    let that = this;
-    Services.onload()
-    .then(function(res){
-      console.log("res", res);
-      that.setState({paymentList: res.payment, sessionList: res.session});
-    })
-    for (let index = 0; index < document.getElementsByClassName('menu-button').length; index++) {
-      document.getElementsByClassName('menu-button')[index].classList.remove('active');
-    }
-
+    let data = JSON.parse(localStorage.getItem("data"));
+    this.setState({data: data});
     for (let index = 0; index < document.getElementsByClassName('menu-button').length; index++) {
       document.getElementsByClassName('menu-button')[index].classList.remove('active');
     }
@@ -219,11 +209,12 @@ class Contracts extends Component {
       console.log("result ===== ", res)
       if (res.status) {
         if (that.state.contractType=="payment") {
-          that.state.paymentList.push(that.state.newName);   
+          that.state.data.payment.push(that.state.newName);   
         } else {
-          that.state.sessionList.push(that.state.newName);   
+          that.state.data.session.push(that.state.newName);   
         }
         that.setState({});
+        localStorage.setItem('data', that.state.data);
       }
     }) 
   }
@@ -241,7 +232,8 @@ class Contracts extends Component {
         payment: this.state.paymentItem,
         paymentArgs: this.state.paymentArg,
         session: this.state.sessionItem,
-        sessionArgs: this.state.sessionArg
+        sessionArgs: this.state.sessionArg,
+        account: "MDAwMDAwMDAwMDAwMDAwMDAwMDA="
       };
       Services.deployContract(contractInfo)
       .then(function(res){
@@ -249,7 +241,7 @@ class Contracts extends Component {
       })
   }
   render() { 
-    const {paymentList, sessionList} = this.state;
+    const {payment, session} = this.state.data;
     return ( 
       <div style={styles.container}>
         <div style={styles.buttonRow} className="content">
@@ -261,8 +253,8 @@ class Contracts extends Component {
           </div>
         </div>
         <div style={styles.content} className="content">
-        {paymentList.map(paymentItem=>
-          <div style={{...styles.grayRow, backgroundColor: 'rgb( 242, 242, 242 )',}} className={paymentItem==this.state.paymentItem?'selected-payment':''} onClick={()=>this.setState({paymentItem: paymentItem})}>
+        {payment.map(paymentItem=>
+          <div style={{...styles.grayRow, backgroundColor: 'rgb( 242, 242, 242 )',}} className={paymentItem==this.state.paymentItem?'selected':''} onClick={()=>this.setState({paymentItem: paymentItem})}>
             <div style={styles.columns.name}>
               {paymentItem}
             </div>
@@ -281,8 +273,8 @@ class Contracts extends Component {
           </div>
         </div>
         <div style={styles.content} className="content">
-        {sessionList.map(sessionItem=>
-           <div style={styles.grayRow} className={sessionItem==this.state.sessionItem?'selected-session':''} onClick={()=>this.setState({sessionItem: sessionItem})}>
+        {session.map(sessionItem=>
+           <div style={styles.grayRow} className={sessionItem==this.state.sessionItem?'selected':''} onClick={()=>this.setState({sessionItem: sessionItem})}>
             <div style={styles.columns.name}>
               {sessionItem}
             </div>

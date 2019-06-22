@@ -118,10 +118,14 @@ class Accounts extends Component {
         isNew: false,
         newName: '',
         keyFile: '',
-        keyList: [],
         newModal: false,
-        balence: '',
-        validationError: false
+        balance: '',
+        validationError: false,
+        data: {
+          accounts: [],
+          payment: [],
+          session: []
+          }
       };
       this.newKey = this.newKey.bind(this);
       this.createAccount = this.createAccount.bind(this);
@@ -133,12 +137,8 @@ class Accounts extends Component {
       this.closeModal = this.closeModal.bind(this);
   }
   componentDidMount() {
-    let that = this;
-    Services.onload()
-    .then(function(res){
-      console.log("res", res);
-      that.setState({keyList: res.accounts});
-    }) 
+    let data = JSON.parse(localStorage.getItem("data"));
+    this.setState({data: data});
 
     for (let index = 0; index < document.getElementsByClassName('menu-button').length; index++) {
       document.getElementsByClassName('menu-button')[index].classList.remove('active');
@@ -148,36 +148,35 @@ class Accounts extends Component {
 
   viewItem(key) {
     alert(key);
-    // Services.onload()
-    // .then(function(res){
-    //   console.log("res", res);
-    //   res.json().then(function (params) {
-    //     console.log('params', params);
-    //     this.setState({keyList: params});
-    //   })
-    // }) 
   }
 
   createAccount() {
-    if (this.state.newName!==""&&this.state.balence!=="") {
-      let accountInfo = {name: this.state.newName, balance: this.state.balence};
+    if (this.state.newName!==""&&this.state.balance!=="") {
+      let accountInfo = {name: this.state.newName, balance: this.state.balance};
       let that = this;
       Services.createAccount(accountInfo)
       .then(function(res){
         that.closeModal();
         let newValue = { name: accountInfo.name, publicKey: res.publicKey};
-        that.state.keyList.push(newValue);
-        that.setState({keyList: that.state.keyList});
+        that.state.data.accounts.push(newValue);
+        that.setState({data: that.state.data});
+        localStorage.setItem("data", JSON.stringify(that.state.data));
       }) 
     } else {
       this.setState({validationError: true});
     }
   }
 
-  deleteItem() {
-    let keyInfo = {name: ''};
-    Services.deleteKey(keyInfo)
+  deleteItem(name, i) {
+    let keyInfo = {name: name};
+    let that = this;
+    Services.deleteAccount(keyInfo)
     .then(function(res){
+      if (res.status) {
+        that.state.data.accounts.splice(i, 1);
+        that.setState({data: that.state.data});
+        localStorage.setItem("data", JSON.stringify(that.state.data));        
+      }
       console.log("res", res);
     }) 
   }
@@ -221,13 +220,13 @@ class Accounts extends Component {
             </div>
           </div>
           <div style={styles.content} className="content">
-            {this.state.keyList.map(item =>
+            {this.state.data.accounts.map((item, i)=>
               <div key={item.id} style={styles.rowItem}>
                 <div style={styles.columns.name}>{item.name}</div>
                 <div className="btn txt" style={styles.columns.view} onClick={()=>this.viewItem(item.publicKey)}>
                   key
                 </div>
-                <div className="btn txt" style={styles.columns.delete} onClick={this.deleteItem}>
+                <div className="btn txt" style={styles.columns.delete} onClick={()=>this.deleteItem(item.name, i)}>
                   del       
                 </div>
               </div>
@@ -245,8 +244,8 @@ class Accounts extends Component {
                   <input style={styles.input} id="new-name" name="newName" value={this.state.newName} onChange={this.handleChange}/>
                 </div>
                 <div style={styles.formItem}>
-                  <div style={styles.formLabel}>initial balence:</div>
-                  <input style={styles.input} type="number" name="balence" value={this.state.balence} onChange={this.handleChange}/>
+                  <div style={styles.formLabel}>initial balance:</div>
+                  <input style={styles.input} type="number" name="balance" value={this.state.balance} onChange={this.handleChange}/>
                 </div>
                 {this.state.validationError&&<div style={{display: 'flex',justifyContent: 'center'}}><span className="validation">"name” and “initial balance” must be specified’</span></div>}
               </div>
