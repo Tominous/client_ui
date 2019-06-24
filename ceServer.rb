@@ -1,6 +1,7 @@
 
 # command line: optional single argument specifying yaml config file name
 # TODO: make rescue clauses capture all exception classes
+# TODO: create class to manage contract libraries?
 
 require "sinatra/base"
 require "net/http"
@@ -54,6 +55,7 @@ configure {
    set( :port, config[ "serverPort" ] )                          # fyi: the default port for sinatra is 4567
    set( :http, Net::HTTP.new( config[ "envoyAddress" ], config[ "envoyPort" ] ) )
    set( :assetRoot, config[ "assetRoot" ] )                      # root directory for css, js, images, etc.
+   set( :storeRoot, config[ "storeRoot" ] )                      # root directory for store file and contract libraries
    set( :store,     config[ "storeRoot" ] + "/" + config[ "store" ] )
    set( :account16, config[ "masterAccount" ] )
    set( :account64, Base64.strict_encode64( Base16.decode16( config[ "masterAccount" ] ) ) )
@@ -74,15 +76,17 @@ configure {
       }
    end
 
-   %w[ payment session ].each { | dir |          # load current contents of contract libraries (which are saved in directories)
-      dir2 = config[ "storeRoot" ] + "/" + dir
-      set( ( dir + "Lib" ).to_sym, dir2 )
+   %w[ payment session ].each { | type |          # load current contents of contract libraries (which are saved in directories)
+      dir2 = settings.storeRoot + "/#{ type }Lib"
 
       if Dir.exists?( dir2 )
-         @@store[ dir ] = Dir.entries( dir2 ) - [ ".", ".." ]   # TODO: remove trailing ".*" from filenames?
+         @@store[ type ] = ( Dir.entries( dir2 ) - [ ".", ".." ] ).map { | file |
+            base = file.match( /^(.+)\.wasmBase64$/ )
+            ( base.nil? ) ? file : base[ 1 ]
+         }
       else
          Dir.mkdir( dir2 )                       # create the directory if it doesn't exist
-         @@store[ dir ] = [ ]
+         @@store[ type ] = [ ]
          print( "\n>>> creating directory ", dir2 )
       end
    }
@@ -97,16 +101,23 @@ helpers {
 
    def deploy( account, payment, paymentArgs, session, sessionArgs )   # deal with .wasmBas64 in filenames
 
+      session = settings.sessionLib + "/#{ session }.wasmBase64"
+      raise( CEexcept.new( "session contract does not exist: '#{ session }'" ) ) unless File.exist?( session )
+      payment = settings.paymentLib + "/#{ payment }.wasmBase64"
+      raise( CEexcept.new( "payment contract does not exist: '#{ payment }'" ) ) unless File.exist?( payment )
+
+      sessionArgs = 0x1000000 | ( ( sessionArgs.to_i & 0xFF ) << 24 )   # this only works for a single integer argument
+
       deploy = {
          user:      "",
-         address:   settings.account64,
+         address:   settings.account64,                 # use hardwired account for now
          timestamp: ( Time.now.to_f * 1000.0 ).round,
          session: {
-            code: File.read( "session/#{ session }" ),
-            args: "",
+            code: File.read( session ),
+            args: sessionArgs,
          },
          payment: {
-            code: File.read( "payment/#{ payment }" ),
+            code: File.read( payment ),
             args: "",
          },
          gasLimit:      1000000000,
@@ -153,14 +164,7 @@ get( "/data" ) {
       }
    }
 
-   %w[ payment session ].each { | element |
-      payload[ element ] = @@store[ element ].map { | contractFile |
-         contractName = contractFile.match( /(.+)\.wasmBase64/ )
-         ( contractName.nil? ) ? contractFile : contractName[ 1 ]
-      }
-   }
-
-   %w[ savedDeploys savedQueries ].each { | element |
+   %w[ payment session savedDeploys savedQueries ].each { | element |
       payload[ element ] = @@store[ element ]
    }
 
@@ -259,7 +263,8 @@ put( "/contract" ) {
          element == req[ "name" ]
       }
 
-      File.write( "#{ req[ "type" ] }/#{ req[ "name" ] }.wasmBase64", req[ "wasm" ] )   # overwrites any existing file; indicate overwrite in message?
+      file = "#{ settings.storeRoot }/#{ req[ "type" ] }Lib/#{ req[ "name" ] }.wasmBase64"
+      File.write( file, req[ "wasm" ] )   # overwrites any existing file; TODO: indicate overwrite in message?
       @@store[ req[ "type" ] ] << req[ "name" ]
 
       File.open( settings.store, "w" ) { | f |
@@ -278,7 +283,7 @@ put( "/contract" ) {
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
-#
+
 post( "/contract/save" ) {
    begin
       req   = JSON.parse( request.body.read )
@@ -289,7 +294,7 @@ post( "/contract/save" ) {
          req[ element ] = "" unless req.has_key?( element )
       }
 
-      @@store[ "savedDeploys" ].delete_if { | element |
+      @@store[ "savedDeploys" ].delete_if { | element |       # delete any existing saved deploy with the same name
          element[ "name" ] == req[ "name" ]
       }
 
@@ -315,12 +320,15 @@ post( "/contract/save" ) {
 post( "/contract/deploy" ) {
    begin
       req   = JSON.parse( request.body.read )
-      valid = req.has_key?( "payment" ) && req.has_key?( "session" ) && req.has_key?( "account" )
-      raise( CEexcept.new( "post /contract request missing one or more of 'payment', 'session', 'account'" ) ) unless valid
-      out = settings.store.read( req[ "keyPairId" ] )
-      raise( CEexcept.new( "keyPairId '#{ req[ "keyPairId" ] }' does not exist" ) ) unless out.status
-      out = deploy( out.public, :payment, [ ], :createAccount, [ req[ "balance" ] ] )
-      raise( CEexcept.new( out.msg ) ) unless out.status
+      valid = req.has_key?( "account" ) && req.has_key?( "payment" ) && req.has_key?( "session" )
+      raise( CEexcept.new( "post /contract request missing one or more of 'account', 'payment', 'session'" ) ) unless valid
+
+      %w[ paymentArgs sessionArgs ].each { | element |        # initialize these optional elements if not present
+         req[ element ] = "" unless req.has_key?( element )
+      }
+
+      out = deploy( req[ "account" ], req[ "payment" ], req[ "paymentArgs" ], req[ "session" ], req[ "sessionArgs" ] )
+
       {
          status:    true,
          message:   "account create deploy accepted"
@@ -339,11 +347,23 @@ delete( "/contract" ) {
    begin
       req   = JSON.parse( request.body.read )
       valid = req.has_key?( "name" ) && req.has_key?( "type" )
-      raise( CEexcept.new( "delete /account request missing one or more of 'name', 'type'" ) ) unless valid
-      valid = %w[ payment session ].include?( req[ "type" ] )
-      raise( CEexcept.new( "put /contract request 'type' property must be 'payment' or 'session'" ) ) unless valid
-      found = @@store[ req[ "type" ] ].delete( req[ "name" ] + ".wasmBase64" )
-      raise( CEexcept.new( "#{ req[ "type" ] } contract '#{ req[ "name" ] }' does not exist" ) ) if found.nil?
+      raise( CEexcept.new( "delete /contract request missing one or more of 'name', 'type'" ) ) unless valid
+
+      if %w[ payment session ].include?( req[ "type" ] )
+         file = "#{ settings.storeRoot }/#{ req[ "type" ] }Lib/#{ req[ "name" ] }.wasmBase64"
+         raise( CEexcept.new( "#{ req[ "type" ] } contract file '#{ file }' does not exist" ) ) unless File.exist?( file )
+         File.delete( file )
+         found = @@store[ req[ "type" ] ].delete( req[ "name" ] )
+         raise( CEexcept.new( "#{ req[ "type" ] } contract '#{ req[ "name" ] }' does not exist" ) ) if found.nil?
+      elsif req[ "type" ] == "saved"
+         index = @@store[ "savedDeploys" ].find_index { | hash |
+            hash[ "name" ] == req[ "name" ]
+         }
+         raise( CEexcept.new( "saved deploy '#{ req[ "name" ] }' does not exist" ) ) if index.nil?
+         @@store[ "savedDeploys" ].delete_at( index )
+      else
+         raise( CEexcept.new( "delete /contract request 'type' property must be one of 'payment', 'session', 'saved'" ) )
+      end
 
       File.open( settings.store, "w" ) { | f |
          YAML.dump( @@store, f )
@@ -392,9 +412,10 @@ get( "/favicon.ico" ) {
 
 %i[ get put post delete patch options ].each { | method |
    send( method, "*" ) { | invalidRoute |
-      errMsg = "**** invalid route: #{ method.upcase } #{ invalidRoute }"
-      printf( "\n%s\n", errMsg )   # print error message to console
-      [ 400, [ errMsg ] ]          # rack-compatible return value; the body (second) element must respond to each()
+      errMsg = "invalid route: #{ method.upcase } #{ invalidRoute }"
+      printf( "\n**** %s\n", errMsg )   # print error message to console
+      except = CEexcept.new( errMsg )
+      [ 400, [ except.payload ] ]       # rack-compatible return value; the body (second) element must respond to each()
    }
 }
 
