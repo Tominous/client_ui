@@ -1,5 +1,6 @@
 ---
 accounts:
+<<<<<<< HEAD
 - name: aaaaaaaaa
   public: |
     -----BEGIN PUBLIC KEY-----
@@ -38,6 +39,46 @@ accounts:
     gB7sjLo3AoGBAMNt8IxxdSO4iQiDSox3Pmd0Tgw5FnDi5G+ad1jkoA7GG97hpzWf
     9mJRjZP1qQH7BBSCgQdLm6S1jzA+/RpwsiyPromp/EOLw/6Ey+9MNYM6avpTe/s7
     9vaP5jk5b0w6uexv/5OAsqIYfb8+rlvI0nxC5tS7NMMRYCWxEG1zTKzW
+=======
+- name: new
+  public: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzM7/oY7geD8MY0Y8d4ON
+    0g3sy9X/9yRcmqzM+aCntfu1hNg9GZBAd+wSL/xHnBZJMWuaYLqGRAMWdTwY3Am7
+    bdlaq5HPKgGItsufhMq0HdZf5nKebCulYQyChRTv99b8fupLzP1wtkprChGyY7Mh
+    k5EVhSDPhGNFvQc8oYa4flIhZmAw1ByVYxrrcIF1n1mVvENgdBMJ68pS/7WkIG7v
+    d3zu5YeBJbwsJj1Bhg1VHftRpKbMC2hSIeg6TsSNr4F43MGLXbzCjI7vwUwhMQ7J
+    aOiHrKIFeJldFnHq0GqyMc6HNoPRHeZ4Tfly1J71RL2v0x9jehMl/UVlsTBSUex0
+    GwIDAQAB
+    -----END PUBLIC KEY-----
+  private: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEowIBAAKCAQEAzM7/oY7geD8MY0Y8d4ON0g3sy9X/9yRcmqzM+aCntfu1hNg9
+    GZBAd+wSL/xHnBZJMWuaYLqGRAMWdTwY3Am7bdlaq5HPKgGItsufhMq0HdZf5nKe
+    bCulYQyChRTv99b8fupLzP1wtkprChGyY7Mhk5EVhSDPhGNFvQc8oYa4flIhZmAw
+    1ByVYxrrcIF1n1mVvENgdBMJ68pS/7WkIG7vd3zu5YeBJbwsJj1Bhg1VHftRpKbM
+    C2hSIeg6TsSNr4F43MGLXbzCjI7vwUwhMQ7JaOiHrKIFeJldFnHq0GqyMc6HNoPR
+    HeZ4Tfly1J71RL2v0x9jehMl/UVlsTBSUex0GwIDAQABAoIBAQCR3DIuiyTOPojC
+    Avl5XFWabZRhLw1Wo6zX840fkw0eDB+gdqg9FoDzZ0skpZUSUsTZz3povS52LYTH
+    BX/m5X94oj1yxys1DVaiaK440mwoe85cvvCYtRTY4yHpSZoFdjTo5lAJs82b5bAJ
+    wcS8QIz/HWqoH0/rRxAZqZfCqcGnI+vKrTqQZMNpP04poGvNP/iSmB75y1jfV3dS
+    8R/cOF65q7qqFRr0jFMxkO66iInrXOQPud0ABjL4GGJlkfhmxcdEgeMZ4SeY5u19
+    15DZz3RirujQdXeHMqbGwOZZceCO/71pSB+6xLyQzBr9iRmqRzG7r2/7BU3qdRlu
+    cjh8GHAhAoGBAPdTRkAzPUhTa4HCuW4Hm0T+7fdAxNg45FNA3BLHhP6ZO7wdWbgu
+    1zIocYBwHzkMt5Dd6SSm0JG2sELpGug4xiejViOfMigfl0AkSh+79/Ik1Sp05gYM
+    X1R6KVkiEpuaFBSWBOdjyEJKZyLImgPSLNNfbXTa726Mwn1qYRfHN9DDAoGBANP9
+    99QN7QDVLgoSn2aoc5c6UZLrLYiedcOphbYALbp9utFRMRTJ92sDSoHvnfDIEgIy
+    Po4NtMWjh5fApLXLKh8+qB/tSvtXujAK2kfU2mLBhKEL/yHlmwGG/jio9OwO7ziD
+    ymPWPeUoqAt6MAO8yDx0NxWPw4/cszJTGPNyB5nJAoGAA9h0oCzryAMcCdF4RqCx
+    pln8YzrLlL0Vt8GralNV2wuQ5TTjnzyDNhFw6llT8vQiqor4xAwf9BQOG4w6UeAI
+    HLeqcDVad0s+c83cpS+sBETUV6uno/JvTQX1PKCN/4Neyo8mll5zz6wOfHj4BBUx
+    gzvZnNaGoIZpw79ysQb09DcCgYB7OBpt8m441rB9AFgQpocRdr9lgzcjOt++i/GB
+    WVc7F8uX0PaTW9VpKS+MmQeXpeL5zdSYYxUY77VnmnzigiWIpbW5YQb9Uv+Q3y4D
+    JJCPaGY76aoxPLE9UQbBTkuWThP0KH5iS2wMn/YVPb9c3MUShoZiDP8hxqmN7ckJ
+    79TFKQKBgGS4dYZpbD6Uvx5/zak5VBkTuJsyd0IjXCEK5NDHayVK7wcz1203zb4+
+    SUgJz4yDl3maW6z/RZHV7/KIq3O9eaIusWSd7YPa/I50kIaaljKyUhgK2w5RIQLr
+    AE+R0Q+XFEB0RqmDoxFtN+jW7l1lyHSzHqiuaTpbTudW/3WYvuyI
+>>>>>>> e9172422013772a73b63ccebf8bf6ec6673aa5ce
     -----END RSA PRIVATE KEY-----
 - name: new1
   public: |
@@ -78,6 +119,48 @@ accounts:
     qgmMBqinMLfoKsI8Pig5DD5xXS01sDKcRjY+B8wQ4SiiAYGspQUdSq23Y08iE69o
     idWMqqYgQnme4mFgvF7+3ESVprWNHjFznM3DrZwHhIvJjMiUOGs=
     -----END RSA PRIVATE KEY-----
+<<<<<<< HEAD
+=======
+- name: bang tango
+  public: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvc4nMWmw0at8r+HZwjtT
+    txFStL/CdQd2QsnXi0uYy8s/pjvtkiLZnUZXoAieeHyL7YuovOnoUAgpJq3Ph6Iu
+    jiDJmR86DkLbdWeXN6dvocygAEYqPrhR3chn23ZtS/BwIEHfnc+Nzef7ZA+Hjd6c
+    1+h024/QGWE/ItzvjsXgcXQs7l4Wq7PdCvxacvJIOji105a95/3sWlIr47biQ2MX
+    1kGzhF+ODfhXIU4Mmg+IVyhJbcqHbheRJ3OkQ7LDvF3mRA+VM5C57FrpFGk9xMYL
+    2RjLecEaEQtU2RMqHkHVJmALxkdGCxSD60+qtDSV6+khjb1JXuJ8ey+zAxkmPY3s
+    4QIDAQAB
+    -----END PUBLIC KEY-----
+  private: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpgIBAAKCAQEAvc4nMWmw0at8r+HZwjtTtxFStL/CdQd2QsnXi0uYy8s/pjvt
+    kiLZnUZXoAieeHyL7YuovOnoUAgpJq3Ph6IujiDJmR86DkLbdWeXN6dvocygAEYq
+    PrhR3chn23ZtS/BwIEHfnc+Nzef7ZA+Hjd6c1+h024/QGWE/ItzvjsXgcXQs7l4W
+    q7PdCvxacvJIOji105a95/3sWlIr47biQ2MX1kGzhF+ODfhXIU4Mmg+IVyhJbcqH
+    bheRJ3OkQ7LDvF3mRA+VM5C57FrpFGk9xMYL2RjLecEaEQtU2RMqHkHVJmALxkdG
+    CxSD60+qtDSV6+khjb1JXuJ8ey+zAxkmPY3s4QIDAQABAoIBAQCrvHYV7Y2BiOp+
+    sZm4drmecNwmk0M9ZI0KjVqrvLD55GMo5BxnF4VTGqx6LpJEblyliLIajIIYt+mU
+    B7w4+vOowd3m4CxFbxTmu95FCwikm2NCHDppGZlpVMUz+4mVJm4toazVO1ERN49s
+    z+hU41GCwd/KMeuWqzjXMJTI2B3mSCihRjTW496XhNDQLXj5VCrociEZGZs7Biux
+    hu1copN4RVkfqYA1XO+azXW5zOQes1fa2xImWAUZ57/VbW57MoPagX4Q1KdrXPNk
+    Ns+h4xVz0+QipOn/iN+9dNTTprSOZVBqESDeAzOnttNH+I8TLHFCxC9MnHMiA4p+
+    yMrdkhapAoGBAPUczFeCe+L1yy45baYswLSAkc1AgiXiZMZWYRS0fNNII2KI5dDS
+    43mYsUdVMxvAb6Hw/a0jGo7Z2kHmZe/SR4UAcS4nNYI2LnGjmPtTlfI0qgF8L3y3
+    jHbs73CqB2NHSo0Qow4rlC0rAcbSXSID2J1qi2w/K39s+VOe13wFz7K7AoGBAMY8
+    c00uyxvJCiTfX8s8KsUUam4kAVASS3/aiEIftxShfYnjEnkM2SVfYysj6xXtcD6A
+    Y1qTeRZKvwON3OaqXsZDsM76hfTj6IUCRFlfOa/pI6CLFNQDApZMjFzq5Gt6LMCe
+    RS872G/HOhiOlMqAaUIYwhvo08kBcHQn5ZS+FusTAoGBAKtnQQns6D81DKk9ZYzv
+    /K38vniepKRjZX9AxlCZSjThXEU6YCMgZgwRF98/GCdO8YF4KZzaUGcWtsagnCYR
+    kQvT3FGe/48X3nB/K6qMr+2YoE27juWS4ToExAewDsyA/QQaXzu4g7z2Nx7W2mO/
+    9slVyTugDQXlqZCtIhjLY4ujAoGBAIiLnwgtES5EXj5jtoIxIWy60UyodFcJIwQg
+    LPcPDXaifex6goDq/q+lcpOGnClwcX47xTPgnOlj9wqlruEbvUhn2+PV4Gt8iO8F
+    TrsYwo2O00GES4Z1xFRuycg+67O0ZhsPaaxNVpo36qZ7n7WUmewzTZEX4Ll1ylXY
+    HWVFQlgNAoGBAMrRy0uajz5yGO/SQvcK644JPs0587mrQ6I6BHgb8ye+0FRtd//4
+    a1tkHjFjYHGAM/RadIfV3NUU+SzVFMj/1/8DmVgRjqSHrKQCQ8F7h9t44LzaR4/I
+    HAZpVpukhna6tZfIq+vGJOn/gZOf/IIrqwiyRVjZ1yDqX9anWNfuNNd2
+    -----END RSA PRIVATE KEY-----
+>>>>>>> e9172422013772a73b63ccebf8bf6ec6673aa5ce
 payment:
 - 111111.wasmBase64
 - stub.wasmBase64
@@ -86,9 +169,27 @@ payment:
 - uuuuudddd.wasmBase64
 session:
 - 111111.wasmBase64
+- al;kdfja;lskdfj.wasmBase64
 - gggg.wasmBase64
 - jhjhjhj.wasmBase64
 - rocks.wasmBase64
 - session test.wasmBase64
 - test.wasmBase64
 - uuuuu.wasmBase64
+savedDeploys:
+- name: savedDeploy1
+  block: xyz123
+  variant: address
+  key: '3030303030303030303030303030303030303030'
+  path: vote0
+- name: savedDeploy88
+  payment: stub
+  session: rocks
+  sessionArgs: a;ldkfjas;ldkfjasl;dfkjas;ldfkjas;ldfkjas;ldfkjas;ldfkjas;ldfkjasldfk
+  paymentArgs: ''
+savedQueries:
+- name: savedCon1
+  payment: stub
+  paymentArgs: 
+  session: test
+  sessionArgs: 
