@@ -247,7 +247,6 @@ class Contracts extends Component {
       contractInfo = this.state.savedContractItem;
     } else {
       contractInfo = {
-        name: this.state.contractName,
         payment: this.state.paymentItem,
         paymentArgs: this.state.paymentArg,
         session: this.state.sessionItem,
@@ -262,8 +261,13 @@ class Contracts extends Component {
   }
 
   savedDeploy(savedContractItem) {
-    let contractInfo = savedContractItem;
-    contractInfo.account = "MDAwMDAwMDAwMDAwMDAwMDAwMDA=";
+    let contractInfo = {
+      payment: savedContractItem.paymentItem,
+      paymentArgs: savedContractItem.paymentArg,
+      session: savedContractItem.sessionItem,
+      sessionArgs: savedContractItem.sessionArg,
+      account: "MDAwMDAwMDAwMDAwMDAwMDAwMDA="
+    };  
     Services.deployContract(contractInfo)
     .then(function(res){
       console.log("result ===== ", res)
