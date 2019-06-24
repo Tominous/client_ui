@@ -349,7 +349,7 @@ class Contracts extends Component {
                 <div style={styles.columns.name}>
                   {paymentItem}
                 </div>
-                <div className="btn" style={styles.columns.delete} onClick={()=>this.deleteItem(paymentItem.name, 'payment', i)}>
+                <div className="btn" style={styles.columns.delete} onClick={()=>this.deleteItem(paymentItem, 'payment', i)}>
                   del       
                 </div>
               </div>            
