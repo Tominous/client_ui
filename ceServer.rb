@@ -22,7 +22,7 @@ class CEexcept < StandardError
    def initialize( message, payload = { } )
       @message = message
       @payload = {
-         status: false,
+         status:  false,
          message: message
       }
       @payload.merge( payload )
@@ -50,24 +50,40 @@ configure {
 
    config = YAML.load_file( ARGV[ 0 ] || DEFAULT_CONFIG_FILE )   # TODO: check for valid config file format
 
-   if config[ "mode" ] == "remote"
-      set( :bind, "0.0.0.0" )                 # do not set if server is being accessed at localhost
-      set( :port, config[ "serverPort"  ] )   # default port for sinatra is 4567
-   end
-
-   set( :assetRoot, config[ "assetRoot" ] )   # root directory for css, js, images, etc.
-   set( :store,     config[ "storeRoot" ] + "/" + config[ "store" ] )   # TODO: replace this with S3
-   set( :account,   Base64.strict_encode64( Base16.decode16( config[ "masterAccount" ] ) ) )
+   set( :bind, "0.0.0.0" ) if config[ "mode" ] == "remote"       # do not set if server is being accessed at localhost
+   set( :port, config[ "serverPort" ] )                          # fyi: the default port for sinatra is 4567
+   set( :http, Net::HTTP.new( config[ "envoyAddress" ], config[ "envoyPort" ] ) )
+   set( :assetRoot, config[ "assetRoot" ] )                      # root directory for css, js, images, etc.
+   set( :store,     config[ "storeRoot" ] + "/" + config[ "store" ] )
+   set( :account16, config[ "masterAccount" ] )
+   set( :account64, Base64.strict_encode64( Base16.decode16( config[ "masterAccount" ] ) ) )
 
    @@store = YAML.load_file( settings.store )
 
-   %w[ payment session ].each { | dir |       # load current contents of contract libraries
-      if Dir.exists?( dir )
-         @@store[ dir ] = Dir.entries( dir ) - [ ".", ".." ]   # TODO: remove trailing ".*" from filenames?
+   modified = false   # if store is missing any required elements, initialize them and write them back
+
+   %w[ accounts payment session savedDeploys savedQueries ].each { | element |
+      next if @@store.has_key?( element )
+      @@store[ element ] = [ ]
+      modified = true
+   }
+
+   if modified
+      File.open( settings.store, "w" ) { | f |
+         YAML.dump( @@store, f )
+      }
+   end
+
+   %w[ payment session ].each { | dir |          # load current contents of contract libraries
+      dir2 = config[ "storeRoot" ] + "/" + dir
+      set( ( dir + "Lib" ).to_sym, dir2 )
+
+      if Dir.exists?( dir2 )
+         @@store[ dir ] = Dir.entries( dir2 ) - [ ".", ".." ]   # TODO: remove trailing ".*" from filenames?
       else
-         Dir.mkdir( dir )
+         Dir.mkdir( dir2 )
          @@store[ dir ] = [ ]
-         print( "\n>>> creating #{ dir } directory" )
+         print( "\n>>> creating directory ", dir2 )
       end
    }
 }
@@ -83,14 +99,14 @@ helpers {
 
       deploy = {
          user:      "",
-         address:   settings.masterAccount,
+         address:   settings.account64,
          timestamp: ( Time.now.to_f * 1000.0 ).round,
          session: {
-            code: settings.createSession,
+            code: File.read( "session/#{ session }" ),
             args: "",
          },
          payment: {
-            code: settings.payment,
+            code: File.read( "payment/#{ payment }" ),
             args: "",
          },
          gasLimit:      1000000000,
@@ -100,24 +116,12 @@ helpers {
          signature:    ""
       }
 
-      response = http.send_request( "PUT", "/deploy", deploy.to_json )   # deploy create contract
-      print( ">> #{ name } deploy response: ", response.body )
-
-      if response.body.match( /"success": *true/ )
-
-         0.upto( count ) { | attempt |                   # iterate proposes due to round robin load balancer
-            if attempt == 2 * count
-               print( "**** #{ name } propose attempts exceeded" )
-               exit
-            end
-            response = http.send_request( "POST", "/block" )              # propose create contract
-            print( ">> #{ name } propose response (#{ attempt }): ", response.body ) if @@debug
-            break if response.body.match( /"success": *true/ )
-         }
-
-      else
-         print( "**** #{ name } deploy failed: ", response.body )
-      end
+      response = settings.http.send_request( "PUT", "/deploy", deploy.to_json )   # deploy
+      print( ">> #{ name } deploy response: ", response.body ) if @@debug
+      raise( CEexcept.new( "deploy failed: " + response.body ) ) unless response.body.match( /"success": *true/ )
+      response = settings.http.send_request( "POST", "/block" )                # propose
+      print( ">> #{ name } propose response: ", response.body ) if @@debug
+      raise( CEexcept.new( "propose failed: " + response.body ) ) unless response.body.match( /"success": *true/ )
    end
 
    #--- 120 characters -------------------------------------------------------------------------------------------------
@@ -156,6 +160,10 @@ get( "/data" ) {
       }
    }
 
+   %w[ savedDeploys savedQueries ].each { | element |
+      payload[ element ] = @@store[ element ]
+   }
+
    payload.to_json
 }
 
@@ -172,7 +180,7 @@ get( %r[(/.+)] ) { | path |                 # get anything other than / or /data
 post( "/account" ) {
    begin
       req   = JSON.parse( request.body.read )
-      valid = req.has_key?( "name" ) && req.has_key?( "balance" )
+      valid = req.has_key?( "name" ) && req.has_key?( "balance" )   # TODO: check that balance >0?
       raise( CEexcept.new( "post /account request missing one or more of 'name', 'balance'", { publicKey: "" } ) ) unless valid
 
       @@store[ "accounts" ].delete_if { | element |
@@ -270,6 +278,61 @@ put( "/contract" ) {
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
+#
+post( "/contract/save" ) {
+   begin
+      req   = JSON.parse( request.body.read )
+      valid = req.has_key?( "name" ) && req.has_key?( "payment" ) && req.has_key?( "session" )
+      raise( CEexcept.new( "post /contract/save request missing one or more of 'name', 'payment', 'session'" ) ) unless valid
+
+      %w[ paymentArgs sessionArgs ].each { | element |        # initialize these optional elements if not present
+         req[ element ] = "" unless req.has_key?( element )
+      }
+
+      @@store[ "savedDeploys" ].delete_if { | element |
+         element[ "name" ] == req[ "name" ]
+      }
+
+      @@store[ "savedDeploys" ] << req
+
+      File.open( settings.store, "w" ) { | f |
+         YAML.dump( @@store, f )
+      }
+
+      {
+         status:    true,
+         message:   "success"
+      }.to_json
+
+   rescue CEexcept => except
+      print( "\n**** #{ except.message }: #{ req }\n" )   # print error message to console
+      [ 400, [ except.payload ] ]   # rack-compatible return value; the body (second) element must respond to each()
+   end
+}
+
+#--- 120 characters ----------------------------------------------------------------------------------------------------
+#
+post( "/contract/deploy" ) {
+   begin
+      req   = JSON.parse( request.body.read )
+      valid = req.has_key?( "payment" ) && req.has_key?( "session" ) && req.has_key?( "account" )
+      raise( CEexcept.new( "post /contract request missing one or more of 'payment', 'session', 'account'" ) ) unless valid
+      out = settings.store.read( req[ "keyPairId" ] )
+      raise( CEexcept.new( "keyPairId '#{ req[ "keyPairId" ] }' does not exist" ) ) unless out.status
+      out = deploy( out.public, :payment, [ ], :createAccount, [ req[ "balance" ] ] )
+      raise( CEexcept.new( out.msg ) ) unless out.status
+      {
+         status:    true,
+         message:   "account create deploy accepted"
+      }.to_json
+
+   rescue CEexcept => except
+      print( "\n**** #{ except.message }: #{ req }\n" )   # print error message to console
+      [ 400, [ except.payload ] ]   # rack-compatible return value; the body (second) element must respond to each()
+   end
+}
+
+#--- 120 characters ----------------------------------------------------------------------------------------------------
 # i think you can figure this one out on your own
 
 delete( "/contract" ) {
@@ -289,28 +352,6 @@ delete( "/contract" ) {
       {
          status:    true,
          message:   "success"
-      }.to_json
-
-   rescue CEexcept => except
-      print( "\n**** #{ except.message }: #{ req }\n" )   # print error message to console
-      [ 400, [ except.payload ] ]   # rack-compatible return value; the body (second) element must respond to each()
-   end
-}
-
-#--- 120 characters ----------------------------------------------------------------------------------------------------
-#
-post( "/contract" ) {
-   begin
-      req   = JSON.parse( request.body.read )
-      valid = req.has_key?( "payment" ) && req.has_key?( "session" ) && req.has_key?( "account" )
-      raise( CEexcept.new( "post /contract request missing one or more of 'payment', 'session', 'account'" ) ) unless valid
-      out = settings.store.read( req[ "keyPairId" ] )
-      raise( CEexcept.new( "keyPairId '#{ req[ "keyPairId" ] }' does not exist" ) ) unless out.status
-      out = deploy( out.public, :payment, [ ], :createAccount, [ req[ "balance" ] ] )
-      raise( CEexcept.new( out.msg ) ) unless out.status
-      {
-         status:    true,
-         message:   "account create deploy accepted"
       }.to_json
 
    rescue CEexcept => except
@@ -343,7 +384,7 @@ get( "/query" ) {
 #--- 120 characters ----------------------------------------------------------------------------------------------------
 
 get( "/favicon.ico" ) {
-   send_file( settings.root + "/images/favicon.ico" )
+   send_file( settings.assetRoot + "/images/favicon.ico" )
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------

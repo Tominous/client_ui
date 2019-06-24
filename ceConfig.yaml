@@ -1,6 +1,8 @@
 
-mode: local    # if "remote", listen on "serverPort" and bind to 0.0.0.0; else listen on default sinatra port of 4567
-serverPort: 80
+mode:         local   # if "remote", bind to 0.0.0.0
+serverPort:   4567    # ports <1024 require running with sudo
+envoyAddress: localhost
+envoyPort:    9001
 
 assetRoot: "dist"   # root for html, js, css files
 storeRoot: "."      # root for ceStore.yaml and contract libraries
