@@ -262,10 +262,10 @@ class Contracts extends Component {
 
   savedDeploy(savedContractItem) {
     let contractInfo = {
-      payment: savedContractItem.paymentItem,
-      paymentArgs: savedContractItem.paymentArg,
-      session: savedContractItem.sessionItem,
-      sessionArgs: savedContractItem.sessionArg,
+      payment: savedContractItem.payment,
+      paymentArgs: savedContractItem.paymentArgs,
+      session: savedContractItem.session,
+      sessionArgs: savedContractItem.sessionArgs,
       account: "MDAwMDAwMDAwMDAwMDAwMDAwMDA="
     };  
     Services.deployContract(contractInfo)
