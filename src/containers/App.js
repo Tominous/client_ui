@@ -15,9 +15,9 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    if (window.location.pathname!="/") {
-      window.location.href="/";
-    }
+    // if (window.location.pathname!="/") {
+    //   window.location.href="/";
+    // }
   }
 
   componentWillReceiveProps(nextProps) {

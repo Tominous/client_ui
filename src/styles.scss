@@ -49,7 +49,11 @@ a:hover {
 }
 
 .btn {
-  cursor: pointer;   
+	cursor: pointer;   
+	border-radius: 40px;
+	padding: 10px 55px;
+	justify-content: center;
+	display: flex;
 }
 .btn.txt {
   &:hover {
@@ -155,7 +159,7 @@ div .validation {
 }
 
 .selected {
-	background-color: rgb( 236, 87, 72 )!important;
+	border: solid 8px rgba( 236, 87, 72, 0.5)!important;
 }
 
 

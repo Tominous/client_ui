@@ -2,16 +2,14 @@ import React, {Component} from 'react';
 import Services from '../services/services';
 
 const styles = {
-  buttons: {
-    marginTop: 30,
-    float: 'right'
-  },
-  saveButton: {
-    marginLeft: 5
-  },
+
   columns: {
     name: {
-      width: '70%',
+      width: '80%',
+      padding: '10px',
+      color: 'rgb( 89, 89, 89 )',
+    },
+    view: {
       padding: '10px',
       color: 'rgb( 89, 89, 89 )',
     },
@@ -20,21 +18,11 @@ const styles = {
       color: 'rgb( 89, 89, 89 )',
     }
   },
-
-  tableRow: {
-    backgroundColor: 'rgb( 211, 241, 219 )',
-    margin:10,
-    display: 'flex',
-    borderRadius: 5
-  },
-
-
-
-  ///////////////////////////////////
   container: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   content: {
     backgroundColor: 'white',
@@ -43,11 +31,6 @@ const styles = {
   },
   keyButton: {
     backgroundColor:'rgb( 249, 201, 196 )',
-    width: '24%',
-    justifyContent: 'center',
-    display: 'flex',
-    padding: '10px',
-    borderRadius: '11px',
     margin: '5px',
     color: 'rgb( 89, 89, 89 )'
   },
@@ -86,26 +69,21 @@ const styles = {
     borderRadius: 6,
     float: 'right',
     height: 26,
+    width: '100%'
   },
   cancelButton: {
     backgroundColor:'rgb( 220, 220, 220 )',
-    width: '25%',
-    justifyContent: 'center',
-    display: 'flex',
-    padding: '10px',
-    borderRadius: '11px',
     margin: '5px',
     color: 'rgb( 89, 89, 89 )'
   },
   browseButton: {
     backgroundColor:'rgb( 230, 236, 244 )',
-    width: '25%',
-    justifyContent: 'center',
-    display: 'flex',
-    padding: '10px',
-    borderRadius: '11px',
     marginTop: '15px',
     color: 'rgb( 89, 89, 89 )'
+  },
+  center: {
+    width: '100%',
+    justifyContent: 'center'
   }
 };
 
@@ -123,11 +101,28 @@ class Contracts extends Component {
       sessionArg: '',
       paymentItem: '',
       sessionItem: '',
+      savedContractItem: '',
       data: {
               accounts: [],
               payment: [],
-              session: []
-            }
+              session: [],
+              savedContracts: [],
+              savedDeploys: []
+            },
+      // data: {
+      //   accounts: [],
+      //   payment: ["payment1", "payment2", "payment3", "payment4"],
+      //   session: ["session1", "session2", "session3", "session4"],
+      //   savedContracts: [
+      //       {name:"saved contract1", payment: 'payment1', session: 'session1', paymentArgs: 'paymentArg1', sessionArgs: "sessionArg1"},
+      //       {name:"saved contract2", payment: 'payment2', session: 'session2', paymentArgs: 'paymentArg2', sessionArgs: "sessionArg2"},
+      //       {name:"saved contract3", payment: 'payment3', session: 'session3', paymentArgs: 'paymentArg3', sessionArgs: "sessionArg3"},
+      //     ],
+      //   savedDeploys: []
+      // },
+      // savedContracts: [
+      //   {name: '', }
+      // ]
     };
     this.handleChange = this.handleChange.bind(this);
     this.uploadPaymentContract = this.uploadPaymentContract.bind(this);
@@ -220,84 +215,178 @@ class Contracts extends Component {
   }
 
   selectPayment(paymentName) {
-    alert(paymentName);
+    this.setState({savedContractItem: ''});
+    this.setState({paymentItem: paymentName});
+  }
+
+  selectSession(sessionName) {
+    this.setState({savedContractItem: ''});    
+    this.setState({sessionItem: sessionName});
+  }
+
+  selectContract(contractItem) {
+    this.setState({sessionItem: ''});    
+    this.setState({paymentItem: ''});    
+    this.setState({savedContractItem: contractItem});
   }
 
   deployContract() {
-    if (this.state.paymentItem==''||this.state.sessionItem=='') {
+    let contractInfo = {};
+    if ((this.state.paymentItem==''||this.state.sessionItem=='')&&this.state.savedContractItem=='') {
       alert('payment and session contracts must be specified');
       return;
-    }
-    let contractInfo = {
+    } else if (this.state.paymentItem==''||this.state.sessionItem=='') {
+      contractInfo = this.state.savedContractItem;
+    } else {
+      contractInfo = {
         payment: this.state.paymentItem,
         paymentArgs: this.state.paymentArg,
         session: this.state.sessionItem,
-        sessionArgs: this.state.sessionArg,
-        account: "MDAwMDAwMDAwMDAwMDAwMDAwMDA="
-      };
+        sessionArgs: this.state.sessionArg
+      };      
+    }
+    contractInfo.account = "MDAwMDAwMDAwMDAwMDAwMDAwMDA=";
       Services.deployContract(contractInfo)
       .then(function(res){
         console.log("result ===== ", res)
       })
   }
-  render() { 
-    const {payment, session} = this.state.data;
-    return ( 
-      <div style={styles.container}>
-        <div style={styles.buttonRow} className="content">
-          <div style={styles.label}>
-            payment contracts
-          </div>
-          <div className="btn" style={styles.keyButton} onClick={this.uploadPaymentContract}>
-            upload
-          </div>
-        </div>
-        <div style={styles.content} className="content">
-        {payment.map(paymentItem=>
-          <div style={{...styles.grayRow, backgroundColor: 'rgb( 242, 242, 242 )',}} className={paymentItem==this.state.paymentItem?'selected':''} onClick={()=>this.setState({paymentItem: paymentItem})}>
-            <div style={styles.columns.name}>
-              {paymentItem}
-            </div>
-            <div className="btn" style={styles.columns.delete} onClick={this.deleteItem}>
-              del       
-            </div>
-          </div>            
-        )}
-        </div>
-        <div style={styles.buttonRow} className="content">
-          <div style={styles.label}>
-            session contracts
-          </div>
-          <div className="btn" style={styles.keyButton} onClick={this.uploadSessionContract}>
-            upload
-          </div>
-        </div>
-        <div style={styles.content} className="content">
-        {session.map(sessionItem=>
-           <div style={styles.grayRow} className={sessionItem==this.state.sessionItem?'selected':''} onClick={()=>this.setState({sessionItem: sessionItem})}>
-            <div style={styles.columns.name}>
-              {sessionItem}
-            </div>
-            <div className="btn" style={styles.columns.delete} onClick={this.deleteItem}>
-              del       
-            </div>
-          </div>          
-        )}
 
-        </div>
-        <div className="form content">
-          <div style={styles.formItem}>
-            <div style={styles.formLabel}>payment args</div>
-            <input style={styles.input} name="paymentArg" value={this.state.paymentArg} onChange={this.handleChange}/>
-          </div>
-          <div style={styles.formItem}>
-            <div style={styles.formLabel}>session args</div>
-            <input style={styles.input} name="sessionArg" value={this.state.sessionArg} onChange={this.handleChange}/>
-          </div>
-          <div style={{...styles.formItem, justifyContent: 'center'}}>
-            <div className="btn" style={styles.keyButton} onClick={this.deployContract}>
-              deploy
+  savedDeploy(savedContractItem, i) {
+    console.log(i);
+    let contractInfo = savedContractItem;
+    contractInfo.account = "MDAwMDAwMDAwMDAwMDAwMDAwMDA=";
+    Services.deployContract(contractInfo)
+    .then(function(res){
+      console.log("result ===== ", res)
+    })
+  }
+
+  saveContract() {
+    let contractInfo = {};
+    if (this.state.paymentItem==''||this.state.sessionItem=='') {
+      alert('payment and session contracts must be specified');
+      return;
+    } 
+      contractInfo = {
+        payment: this.state.paymentItem,
+        paymentArgs: this.state.paymentArg,
+        session: this.state.sessionItem,
+        sessionArgs: this.state.sessionArg,
+        account: "MDAwMDAwMDAwMDAwMDAwMDAwMDA="
+      };      
+      Services.saveContract(contractInfo)
+      .then(function(res){
+        console.log("result ===== ", res)
+      })
+  }
+
+  deleteContract(contractItem, i) {
+    console.log(i);
+    console.log(contractItem);
+  }
+
+  deleteItem(item, type, i) {
+    Services.deleteContract({name: item})
+    .then(function(res) {
+      console.log(res);
+      if (type=='session') {
+        this.state.data.session.splice(i, 1);
+      } else {
+        this.state.data.payment.splice(i, 1);
+      }
+      this.setState({data: this.state.data});
+    })
+  }
+
+  render() { 
+    const {payment, session, savedContracts} = this.state.data;
+    return ( 
+      <div>
+        <div className="row">
+          <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-md m-b-15">
+            <div style={styles.buttonRow}>
+              <div style={styles.label}>
+                payment contracts
+              </div>
+              <div className="btn" style={styles.keyButton} onClick={this.uploadPaymentContract}>
+                upload
+              </div>
             </div>
+            <div style={styles.content}>
+            {payment.map((paymentItem, i)=>
+              <div style={{...styles.grayRow, backgroundColor: 'rgb( 228, 242, 242 )',}} className={paymentItem==this.state.paymentItem?'selected':''} onClick={()=>this.selectPayment(paymentItem)}>
+                <div style={styles.columns.name}>
+                  {paymentItem}
+                </div>
+                <div className="btn" style={styles.columns.delete} onClick={()=>this.deleteItem(paymentItem, 'payment', i)}>
+                  del       
+                </div>
+              </div>            
+            )}
+            </div>
+            <div style={{...styles.label, justifyContent: 'center', width: '100%'}}>payment args</div>            
+            <div style={styles.formItem}>
+              <input style={styles.input} name="paymentArg" value={this.state.paymentArg} onChange={this.handleChange}/>
+            </div>      
+          </div>
+          <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-md m-b-15">
+
+            <div style={styles.buttonRow}>
+              <div style={styles.label}>
+                session contracts
+              </div>
+              <div className="btn" style={styles.keyButton} onClick={this.uploadSessionContract}>
+                upload
+              </div>
+            </div>
+            <div style={styles.content}>
+            {session.map((sessionItem, i)=>
+              <div style={styles.grayRow} className={sessionItem==this.state.sessionItem?'selected':''} onClick={()=>this.selectSession(sessionItem)}>
+                <div style={styles.columns.name}>
+                  {sessionItem}
+                </div>
+                <div className="btn" style={styles.columns.delete} onClick={()=>this.deleteItem(sessionItem, 'session', i)}>
+                  del       
+                </div>
+              </div>          
+            )}
+            </div>
+            <div style={{...styles.label, justifyContent: 'center', width: '100%'}}>session args</div>            
+            <div style={styles.formItem}>
+              <input style={styles.input} name="sessionArg" value={this.state.sessionArg} onChange={this.handleChange}/>
+            </div>
+          </div>
+        </div>
+        <div style={styles.container}>
+          <div className="form content">
+            <div style={{...styles.formItem, justifyContent: 'center'}}>
+              <div className="btn" style={styles.keyButton} onClick={this.deployContract}>
+                deploy
+              </div>
+              <div className="btn" style={styles.keyButton} onClick={this.saveContract}>
+                save
+              </div>
+            </div>        
+            <div style={{...styles.label, justifyContent: 'center', width: '100%'}}>
+              saved
+            </div>
+            <div style={styles.content}>
+            {savedContracts.map((savedContractItem, i)=>
+              <div style={{...styles.grayRow, backgroundColor: 'rgb( 228, 228, 228 )',}} className={savedContractItem.name==this.state.savedContractItem.name?'selected':''} onClick={()=>this.selectContract(savedContractItem)}>
+                <div style={styles.columns.name}>
+                  {savedContractItem.name}
+                </div>
+                <div className="btn" style={styles.columns.delete} onClick={this.savedDeploy(savedContractItem, i)}>
+                  deploy       
+                </div>
+                <div className="btn" style={styles.columns.delete} onClick={()=>this.deleteContract(savedContractItem, i)}>
+                  del       
+                </div>
+              </div>            
+            )}
+            </div>
+
           </div>
         </div>
 

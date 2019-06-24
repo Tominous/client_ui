@@ -7,7 +7,14 @@ const data = {
     { text: 'explore dag', icon: '', link: '/explore-dag' },
     { text: 'settings', icon: '', link: '/settings' },
     { text: 'docs', icon: '', link: '/docs' },
-  ]
+  ],
+  data: {
+    accounts: [],
+    payment: [],
+    session: [],
+    savedContracts: [],
+    savedDeploys: []
+  }
 };
 
 export default data;

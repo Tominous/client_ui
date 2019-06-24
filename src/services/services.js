@@ -29,6 +29,10 @@ export default class Services {
         return Http.post('contract', contractInfo);
     }
 
+    static saveContract(contractInfo) {
+        return Http.post('contract/save', contractInfo);
+    }
+
     static getQuery(data) {
         return Http.get('query', data);
     }

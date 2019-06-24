@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Services from '../services/services';
+import data from '../data'
 
 const styles = {
   buttons: {
@@ -56,21 +57,11 @@ const styles = {
   },
   keyButton: {
     backgroundColor:'rgb( 249, 201, 196 )',
-    width: '25%',
-    justifyContent: 'center',
-    display: 'flex',
-    padding: '10px',
-    borderRadius: '11px',
     margin: '5px',
     color: 'rgb( 89, 89, 89 )'
   },
   cancelButton: {
     backgroundColor:'rgb( 220, 220, 220 )',
-    width: '25%',
-    justifyContent: 'center',
-    display: 'flex',
-    padding: '10px',
-    borderRadius: '11px',
     margin: '5px',
     color: 'rgb( 89, 89, 89 )'
   },
@@ -121,11 +112,7 @@ class Accounts extends Component {
         newModal: false,
         balance: '',
         validationError: false,
-        data: {
-          accounts: [],
-          payment: [],
-          session: []
-          }
+        data: data.data
       };
       this.newKey = this.newKey.bind(this);
       this.createAccount = this.createAccount.bind(this);

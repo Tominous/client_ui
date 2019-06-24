@@ -25,7 +25,7 @@ const LeftDrawer = (props) => {
     },
     avatar: {
       div: {
-        margin: 31,
+        margin: '31px 31px 31px 53px',
         backgroundImage:  'url(' + require('../images/casper_labs_log.png') + ')',
         height: '138px',
         backgroundSize: 'contain',
