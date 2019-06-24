@@ -74,14 +74,14 @@ configure {
       }
    end
 
-   %w[ payment session ].each { | dir |          # load current contents of contract libraries
+   %w[ payment session ].each { | dir |          # load current contents of contract libraries (which are saved in directories)
       dir2 = config[ "storeRoot" ] + "/" + dir
       set( ( dir + "Lib" ).to_sym, dir2 )
 
       if Dir.exists?( dir2 )
          @@store[ dir ] = Dir.entries( dir2 ) - [ ".", ".." ]   # TODO: remove trailing ".*" from filenames?
       else
-         Dir.mkdir( dir2 )
+         Dir.mkdir( dir2 )                       # create the directory if it doesn't exist
          @@store[ dir ] = [ ]
          print( "\n>>> creating directory ", dir2 )
       end

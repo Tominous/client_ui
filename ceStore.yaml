@@ -121,19 +121,17 @@ payment:
 - 111111.wasmBase64
 - stub.wasmBase64
 - test.wasmBase64
+- test111111111111.wasmBase64
 - testset.wasmBase64
 - uuuuudddd.wasmBase64
-- test111111111111
 session:
 - 111111.wasmBase64
-- al;kdfja;lskdfj.wasmBase64
 - gggg.wasmBase64
 - jhjhjhj.wasmBase64
 - rocks.wasmBase64
 - session test.wasmBase64
 - test.wasmBase64
 - uuuuu.wasmBase64
-- test111111111111
 savedDeploys:
 - name: savedDeploy1
   block: xyz123
