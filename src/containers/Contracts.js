@@ -297,7 +297,8 @@ class Contracts extends Component {
         that.state.data.savedDeploys.push(contractInfo);
         var modal = document.getElementById("save-contract-modal");
         modal.style.display = "none";
-        that.setState({validationError: false});           
+        that.setState({validationError: false});
+        localStorage.setItem('data', that.state.data);
       }
     })
   }
