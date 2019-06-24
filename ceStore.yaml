@@ -1,121 +1,82 @@
 ---
 accounts:
-- name: new
+- name: warren buffet
   public: |
     -----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzM7/oY7geD8MY0Y8d4ON
-    0g3sy9X/9yRcmqzM+aCntfu1hNg9GZBAd+wSL/xHnBZJMWuaYLqGRAMWdTwY3Am7
-    bdlaq5HPKgGItsufhMq0HdZf5nKebCulYQyChRTv99b8fupLzP1wtkprChGyY7Mh
-    k5EVhSDPhGNFvQc8oYa4flIhZmAw1ByVYxrrcIF1n1mVvENgdBMJ68pS/7WkIG7v
-    d3zu5YeBJbwsJj1Bhg1VHftRpKbMC2hSIeg6TsSNr4F43MGLXbzCjI7vwUwhMQ7J
-    aOiHrKIFeJldFnHq0GqyMc6HNoPRHeZ4Tfly1J71RL2v0x9jehMl/UVlsTBSUex0
-    GwIDAQAB
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvvLIITtoD2q5x68Y1mie
+    Gch/krqKSU57F7QeAvmOa3hRV+RV/bFnTyuUkNdYgbujDWkBvQ3b9fEsXJPqaO4N
+    /d6USg+ToUMwFoxLr1ORvrHRdd8vQ6cOwuE6jwD5zPCVMmAwd6r+XlYt+0nCmbK5
+    1f19LSfMepyn4Ni7MlvVB52w2Y8QX47tLvz4/5oBtMoD7Pmx0PFye+2+gs13ceeh
+    ZBWgdxeMiabSXodU9ctIsNN7SfOipUQirbIoHRmsgTSO0Jm3Tmcfo5/Sv1xzBdzF
+    v58UE4aEsVdXwXM9wjzQQOuolq3vv/95+ySHRCS5nma+5lsVn7qF7lE6y1gAHD+K
+    kQIDAQAB
     -----END PUBLIC KEY-----
   private: |
     -----BEGIN RSA PRIVATE KEY-----
-    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
+    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
     -----END RSA PRIVATE KEY-----
-- name: new1
+- name: bernie madoff
   public: |
     -----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArl6uySlNxNHN2rVjF2MX
-    RoZU9oQT9sGtsHj9SWDxmNU3Y1uvpYPSil7P0353PjFedoa1O0qZXOC+w6lmuMhS
-    e35Jlk9SdPQnU2wGmQpHce/Woc0TEXer6VKRLiRQA5ZtD0eVcxgEUlFtMTTS/yMh
-    Bbi+WvA6vpnzjW+J+nhOaZTxoKS/ZBXGIgqPBHOB8fKjTAO0/ET2BnjApdLzun6n
-    ys92HQmr/fsDWO03WTJIATSjFp6vWzypxXEeNU/DAmtowS6VuZ4Z2htHidA3tJRR
-    CN4VcJHZJ22vftQEqd9AORJ1SNzBNZuqf7LxTWYaop66aq9q9IskIEnW3Zuyl94N
-    swIDAQAB
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5DwPZnFAFE3Y4y+aRaEp
+    jY2h+RCX2oU2lM5Rx8EbFqifpaGMJsYQvHpCdpVR98Agkw0l3BA+gvEWoMOJBnK7
+    5QvkIr8epI+UEwx0kQ/JPjbki9QHgxQ5BP55+ufUHVTTDmHqcc69I1jHcPk0jER7
+    0o44UELvDiNLbs6yDSlzOAjU8JJwYwR9DqICzOLEt3ihq6hj6teNKs7mrQMAwUIw
+    EJ+yTL3k+kBBKgpJ7RiPzqJMEganOroiEUqgDzHlV5G2nQ1s4w2jSfXLevFoiVry
+    6yCKHKB8hwaPZcuhufiENj87d/61YOuplCahD8S/fpH/2F9/8BmCMLd/Fqqz2O7B
+    XwIDAQAB
     -----END PUBLIC KEY-----
   private: |
     -----BEGIN RSA PRIVATE KEY-----
-    MIIEogIBAAKCAQEArl6uySlNxNHN2rVjF2MXRoZU9oQT9sGtsHj9SWDxmNU3Y1uv
-    pYPSil7P0353PjFedoa1O0qZXOC+w6lmuMhSe35Jlk9SdPQnU2wGmQpHce/Woc0T
-    EXer6VKRLiRQA5ZtD0eVcxgEUlFtMTTS/yMhBbi+WvA6vpnzjW+J+nhOaZTxoKS/
-    ZBXGIgqPBHOB8fKjTAO0/ET2BnjApdLzun6nys92HQmr/fsDWO03WTJIATSjFp6v
-    WzypxXEeNU/DAmtowS6VuZ4Z2htHidA3tJRRCN4VcJHZJ22vftQEqd9AORJ1SNzB
-    NZuqf7LxTWYaop66aq9q9IskIEnW3Zuyl94NswIDAQABAoIBAAt6XBMNzvq3vM86
-    xW0SrsOLsCgSBaZmlWJadIHSCdU/o8e8j1Fb3g4Rs6h+WKcVZNx0fZWLkZDVknka
-    u5JKTXOnmnx0eD8Om1AYek60qINNgFliQHET6ZMQRlI9Pa8excsNsT7EQ/SPO5rT
-    mVgGHfRcdttRmOxXAfs7bl+4b6Dvexrnttw8VkyZkRur6YHcNkgtXABVqymCQrOw
-    KdiWFOZDDEnC62tPnMXoxQDorpNVNXV7Y+G4mHTVnDUsF3iY6CeJk6tLBZuOODSZ
-    zQbKmGSMFlG4dIFpeT17mR6jYSXCksFLwAosCmnwfP5dsMN0Zkh2Yxv9Y2JQu+l0
-    w062kkECgYEA4//AgyJXhckn+C+NrKSKWhe/4hvZPHO9k1ro/Acn8ik9vKI0L0AQ
-    4uk4P83ByDIC3TJxU+SDd/6bwoEIUBmbxDj+5Kd4QcDOix3UJx8Zs7jJIyrrGc0S
-    /fHFkEy+emmtdExda6l2RrHe+hAznzqFk+g0PQuonQUpT/w5UporOtECgYEAw8jW
-    1oxS7gtGLo3dVjS85hSZBx2P9AOiH0qBrCxmZ/3ocw10c/IS8uPs0ArOK8fZTpLU
-    JSjWvG7ENLrJ9l6kKPTMKdbD4H23U+6JM49y1G7K1ifQ3dzJ3HUmv7a0Tw8k4l+v
-    y+EeWk9+0H9hxQqBudz/Lj5Or3nUUZSOXHYrWUMCgYAvuHb9u3FgMiMogiOAEAxZ
-    IQFrfPKyAXObZPrAzWqh99nRIo4TmbAvHitEx3cYxMbur0EjEwAlXGgThNhNk56T
-    qm5HQ3obIRTZ70tZSNwjTrjioHgGtXKVLkZwlm+DxZyla9pdz2FPGKmX4046tJAC
-    ziYo5MjM3Kix8hO5Y0VLEQKBgFFMftnMn0s150jBpB19/MrV1s27muFK+PFhcQNb
-    1JJuPy43choLdY7i0p15Py+y5yvXkLx1fuX0YQk8X00s86IGNRlSkzgPPCdgMBz2
-    /kn0T8op8nOOkUw4YYTOi4Ug1sIh1dAlhQMfa5uMqb62pDPX7yb2vJnlTyMpOwxu
-    DYYdAoGAR+mbS9zJANKMXGGwBKkIpxq0G0k91G3pbHXdYxDbtGvrCEvQZzwhXxjk
-    qgmMBqinMLfoKsI8Pig5DD5xXS01sDKcRjY+B8wQ4SiiAYGspQUdSq23Y08iE69o
-    idWMqqYgQnme4mFgvF7+3ESVprWNHjFznM3DrZwHhIvJjMiUOGs=
-    -----END RSA PRIVATE KEY-----
-- name: bang tango
-  public: |
-    -----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvc4nMWmw0at8r+HZwjtT
-    txFStL/CdQd2QsnXi0uYy8s/pjvtkiLZnUZXoAieeHyL7YuovOnoUAgpJq3Ph6Iu
-    jiDJmR86DkLbdWeXN6dvocygAEYqPrhR3chn23ZtS/BwIEHfnc+Nzef7ZA+Hjd6c
-    1+h024/QGWE/ItzvjsXgcXQs7l4Wq7PdCvxacvJIOji105a95/3sWlIr47biQ2MX
-    1kGzhF+ODfhXIU4Mmg+IVyhJbcqHbheRJ3OkQ7LDvF3mRA+VM5C57FrpFGk9xMYL
-    2RjLecEaEQtU2RMqHkHVJmALxkdGCxSD60+qtDSV6+khjb1JXuJ8ey+zAxkmPY3s
-    4QIDAQAB
-    -----END PUBLIC KEY-----
-  private: |
-    -----BEGIN RSA PRIVATE KEY-----
-    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
+    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
     -----END RSA PRIVATE KEY-----
 payment:
 - 111111.wasmBase64
@@ -126,26 +87,38 @@ payment:
 - uuuuudddd.wasmBase64
 session:
 - 111111.wasmBase64
+- al;kdfja;lskdfj.wasmBase64
 - gggg.wasmBase64
 - jhjhjhj.wasmBase64
 - rocks.wasmBase64
 - session test.wasmBase64
 - test.wasmBase64
+- test111111111111.wasmBase64
 - uuuuu.wasmBase64
 savedDeploys:
-- name: savedDeploy1
-  block: xyz123
-  variant: address
-  key: '3030303030303030303030303030303030303030'
-  path: vote0
 - name: savedDeploy88
   payment: stub
   session: rocks
   sessionArgs: a;ldkfjas;ldkfjasl;dfkjas;ldfkjas;ldfkjas;ldfkjas;ldfkjas;ldfkjasldfk
   paymentArgs: ''
-savedQueries:
 - name: savedCon1
   payment: stub
   paymentArgs: 
   session: test
   sessionArgs: 
+- name: ttt
+  payment: test
+  paymentArgs: ''
+  session: session test
+  sessionArgs: ''
+- name: ggg
+  payment: testset
+  paymentArgs: ''
+  session: rocks
+  sessionArgs: ''
+savedQueries:
+- name: savedDeploy1
+  block: xyz123
+  variant: address
+  key: '3030303030303030303030303030303030303030'
+  path: vote0

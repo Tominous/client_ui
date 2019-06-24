@@ -109,6 +109,7 @@ class Contracts extends Component {
               savedQueries: [],
               savedDeploys: []
             },
+      contractName: ''
       // data: {
       //   accounts: [],
       //   payment: ["payment1", "payment2", "payment3", "payment4"],
@@ -134,6 +135,10 @@ class Contracts extends Component {
     this.selectPayment = this.selectPayment.bind(this);
     this.deployContract = this.deployContract.bind(this);
     this.saveContract = this.saveContract.bind(this);
+    this.selectContract = this.selectContract.bind(this);
+    this.openContractModal = this.openContractModal.bind(this);
+    this.savedDeploy = this.savedDeploy.bind(this);
+
   }
 
   componentDidMount() {
@@ -172,6 +177,8 @@ class Contracts extends Component {
   closeModal() {
     this.setState({validationError: false});
     var modal = document.getElementById("upload-contract-modal");
+    modal.style.display = "none";
+    modal = document.getElementById("save-contract-modal");
     modal.style.display = "none";
   }
 
@@ -240,6 +247,7 @@ class Contracts extends Component {
       contractInfo = this.state.savedContractItem;
     } else {
       contractInfo = {
+        name: this.state.contractName,
         payment: this.state.paymentItem,
         paymentArgs: this.state.paymentArg,
         session: this.state.sessionItem,
@@ -253,8 +261,7 @@ class Contracts extends Component {
       })
   }
 
-  savedDeploy(savedContractItem, i) {
-    console.log(i);
+  savedDeploy(savedContractItem) {
     let contractInfo = savedContractItem;
     contractInfo.account = "MDAwMDAwMDAwMDAwMDAwMDAwMDA=";
     Services.deployContract(contractInfo)
@@ -263,25 +270,36 @@ class Contracts extends Component {
     })
   }
 
+  openContractModal() {
+    this.setState({validationError: false});
+    var modal = document.getElementById("save-contract-modal");
+    modal.style.display = "block";
+  }
+
   saveContract() {
     let contractInfo = {};
     let that = this;
-    if (this.state.paymentItem==''||this.state.sessionItem=='') {
-      alert('payment and session contracts must be specified');
+    if (this.state.contractName==''||this.state.paymentItem==''||this.state.sessionItem=='') {
+      this.setState({validationError: true});
       return;
     } 
-      contractInfo = {
-        payment: this.state.paymentItem,
-        paymentArgs: this.state.paymentArg,
-        session: this.state.sessionItem,
-        sessionArgs: this.state.sessionArg,
-        account: "MDAwMDAwMDAwMDAwMDAwMDAwMDA="
-      };      
-      Services.saveContract(contractInfo)
-      .then(function(res){
-        console.log("result ===== ", res);
-        that.state.data.savedDeploy.push(contractInfo);
-      })
+    contractInfo = {
+      name: this.state.contractName,
+      payment: this.state.paymentItem,
+      paymentArgs: this.state.paymentArg,
+      session: this.state.sessionItem,
+      sessionArgs: this.state.sessionArg
+    };      
+    Services.saveContract(contractInfo)
+    .then(function(res){
+      console.log("result ===== ", res);
+      if (res.status) {
+        that.state.data.savedDeploys.push(contractInfo);
+        var modal = document.getElementById("save-contract-modal");
+        modal.style.display = "none";
+        that.setState({validationError: false});           
+      }
+    })
   }
 
   deleteContract(contractItem, i) {
@@ -371,7 +389,7 @@ class Contracts extends Component {
               <div className="btn" style={styles.keyButton} onClick={this.deployContract}>
                 deploy
               </div>
-              <div className="btn" style={styles.keyButton} onClick={this.saveContract}>
+              <div className="btn" style={styles.keyButton} onClick={()=>this.openContractModal()}>
                 save
               </div>
             </div>        
@@ -384,7 +402,7 @@ class Contracts extends Component {
                 <div style={styles.columns.name}>
                   {savedContractItem.name}
                 </div>
-                <div className="btn" style={styles.columns.delete} onClick={this.savedDeploy(savedContractItem, i)}>
+                <div className="btn" style={styles.columns.delete} onClick={()=>this.savedDeploy(savedContractItem)}>
                   deploy       
                 </div>
                 <div className="btn" style={styles.columns.delete} onClick={()=>this.deleteItem(savedContractItem.name, 'saved' ,i)}>
@@ -419,6 +437,30 @@ class Contracts extends Component {
             <div className="modal-footer">
               <div className="btn" style={styles.keyButton} onClick={this.createNewContract}>
                 upload       
+              </div>
+              <div className="btn" style={styles.cancelButton} onClick={this.closeModal}>
+                cancel       
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div ref={this.saveContractModal} id="save-contract-modal" className="modal">
+          <div className="modal-content">
+            <div className="modal-header">
+              <span className="close" onClick={this.closeModal}>&times;</span>
+              <h2>save contract</h2>
+            </div>
+            <div className="modal-body">
+              <div style={styles.formItem}>
+                <div style={styles.formLabel}>name:</div>
+                <input style={styles.input} id="contract-name" name="contractName" value={this.state.contractName} onChange={this.handleChange}/>
+              </div>
+              {this.state.validationError&&<div style={{display: 'flex',justifyContent: 'center'}}><span className="validation">“name” "payment" "session" must be specified</span></div>}
+            </div>
+            <div className="modal-footer">
+              <div className="btn" style={styles.keyButton} onClick={this.saveContract}>
+                save       
               </div>
               <div className="btn" style={styles.cancelButton} onClick={this.closeModal}>
                 cancel       

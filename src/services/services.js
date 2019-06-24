@@ -26,7 +26,7 @@ export default class Services {
     }
 
     static deployContract(contractInfo) {
-        return Http.post('contract', contractInfo);
+        return Http.post('contract/deploy', contractInfo);
     }
 
     static saveContract(contractInfo) {
