@@ -217,7 +217,7 @@ class Contracts extends Component {
           that.state.data.session.push(that.state.newName);   
         }
         that.setState({});
-        localStorage.setItem('data', that.state.data);
+        localStorage.setItem('data', JSON.stringify(that.state.data));
       }
     }) 
   }
@@ -302,7 +302,7 @@ class Contracts extends Component {
         var modal = document.getElementById("save-contract-modal");
         modal.style.display = "none";
         that.setState({validationError: false});
-        localStorage.setItem('data', that.state.data);
+        localStorage.setItem('data', JSON.stringify(that.state.data));
       }
     })
   }
@@ -325,7 +325,7 @@ class Contracts extends Component {
         that.state.data.savedDeploys.splice(i, 1);
       }
       that.setState({data: that.state.data});
-      localStorage.setItem('data', that.state.data);
+      localStorage.setItem('data', JSON.stringify(that.state.data));
     })
   }
 
