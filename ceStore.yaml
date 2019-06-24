@@ -123,6 +123,7 @@ payment:
 - test.wasmBase64
 - testset.wasmBase64
 - uuuuudddd.wasmBase64
+- test111111111111
 session:
 - 111111.wasmBase64
 - al;kdfja;lskdfj.wasmBase64
@@ -132,6 +133,7 @@ session:
 - session test.wasmBase64
 - test.wasmBase64
 - uuuuu.wasmBase64
+- test111111111111
 savedDeploys:
 - name: savedDeploy1
   block: xyz123

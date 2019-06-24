@@ -106,21 +106,21 @@ class Contracts extends Component {
               accounts: [],
               payment: [],
               session: [],
-              savedContracts: [],
+              savedQueries: [],
               savedDeploys: []
             },
       // data: {
       //   accounts: [],
       //   payment: ["payment1", "payment2", "payment3", "payment4"],
       //   session: ["session1", "session2", "session3", "session4"],
-      //   savedContracts: [
+      //   savedDeploys: [
       //       {name:"saved contract1", payment: 'payment1', session: 'session1', paymentArgs: 'paymentArg1', sessionArgs: "sessionArg1"},
       //       {name:"saved contract2", payment: 'payment2', session: 'session2', paymentArgs: 'paymentArg2', sessionArgs: "sessionArg2"},
       //       {name:"saved contract3", payment: 'payment3', session: 'session3', paymentArgs: 'paymentArg3', sessionArgs: "sessionArg3"},
       //     ],
       //   savedDeploys: []
       // },
-      // savedContracts: [
+      // savedDeploys: [
       //   {name: '', }
       // ]
     };
@@ -133,6 +133,7 @@ class Contracts extends Component {
     this.readWasm = this.readWasm.bind(this);
     this.selectPayment = this.selectPayment.bind(this);
     this.deployContract = this.deployContract.bind(this);
+    this.saveContract = this.saveContract.bind(this);
   }
 
   componentDidMount() {
@@ -264,6 +265,7 @@ class Contracts extends Component {
 
   saveContract() {
     let contractInfo = {};
+    let that = this;
     if (this.state.paymentItem==''||this.state.sessionItem=='') {
       alert('payment and session contracts must be specified');
       return;
@@ -277,7 +279,8 @@ class Contracts extends Component {
       };      
       Services.saveContract(contractInfo)
       .then(function(res){
-        console.log("result ===== ", res)
+        console.log("result ===== ", res);
+        that.state.data.savedDeploy.push(contractInfo);
       })
   }
 
@@ -287,20 +290,24 @@ class Contracts extends Component {
   }
 
   deleteItem(item, type, i) {
-    Services.deleteContract({name: item})
+    let that = this;
+    Services.deleteContract({name: item, type: type})
     .then(function(res) {
       console.log(res);
       if (type=='session') {
-        this.state.data.session.splice(i, 1);
-      } else {
-        this.state.data.payment.splice(i, 1);
+        that.state.data.session.splice(i, 1);
+      } else if(type=='payment') {
+        that.state.data.payment.splice(i, 1);
+      } else if(type=='saved') {
+        that.state.data.savedDeploys.splice(i, 1);
       }
-      this.setState({data: this.state.data});
+      that.setState({data: that.state.data});
+      localStorage.setItem('data', that.state.data);
     })
   }
 
   render() { 
-    const {payment, session, savedContracts} = this.state.data;
+    const {payment, session, savedDeploys} = this.state.data;
     return ( 
       <div>
         <div className="row">
@@ -319,7 +326,7 @@ class Contracts extends Component {
                 <div style={styles.columns.name}>
                   {paymentItem}
                 </div>
-                <div className="btn" style={styles.columns.delete} onClick={()=>this.deleteItem(paymentItem, 'payment', i)}>
+                <div className="btn" style={styles.columns.delete} onClick={()=>this.deleteItem(paymentItem.name, 'payment', i)}>
                   del       
                 </div>
               </div>            
@@ -372,7 +379,7 @@ class Contracts extends Component {
               saved
             </div>
             <div style={styles.content}>
-            {savedContracts.map((savedContractItem, i)=>
+            {savedDeploys.map((savedContractItem, i)=>
               <div style={{...styles.grayRow, backgroundColor: 'rgb( 228, 228, 228 )',}} className={savedContractItem.name==this.state.savedContractItem.name?'selected':''} onClick={()=>this.selectContract(savedContractItem)}>
                 <div style={styles.columns.name}>
                   {savedContractItem.name}
@@ -380,7 +387,7 @@ class Contracts extends Component {
                 <div className="btn" style={styles.columns.delete} onClick={this.savedDeploy(savedContractItem, i)}>
                   deploy       
                 </div>
-                <div className="btn" style={styles.columns.delete} onClick={()=>this.deleteContract(savedContractItem, i)}>
+                <div className="btn" style={styles.columns.delete} onClick={()=>this.deleteItem(savedContractItem.name, 'saved' ,i)}>
                   del       
                 </div>
               </div>            
