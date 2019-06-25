@@ -39,82 +39,110 @@ accounts:
     BeTc7dWDCPr1FMPthQvIbsPavNjQzxgLF7N4DiwnukekGB9KTGtwteHHn5eY3+//
     EYlv21kd9X7Fh+KZ7QJiG+gZVn3D5mJuNHf67jMD5naksRKDAo8vrg==
     -----END RSA PRIVATE KEY-----
-- name: test
+- name: charles ponzi
   public: |
     -----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwJqKSw80L0/jnWhowvAX
-    Ab0i0IznZHmGYE5HZ03sTeRfH6nS4JIUCO3Mn0VcQ1d4+4VyRnT52CVrtVwkP2Fn
-    zs6uiiXAnkci0kiQqLcOYAf/6/18X8pM3/ACuJINqJKXVUpxwPuqoA35DVjbRTDP
-    p2VHvFSCX8OoNV632qscruPQbiywroQKaSnKftCw2k2KyrWgb8++Qofk5AYAQUlT
-    fJ9VIK8clRGnFymZgUrGv5A5k7aLQcb8FM+4H0GgTSlD9sg1uUT9G2BCh34rYnm6
-    ZsZnfn3ltXr//bJjRHULU3/k8wEmmu2j5EjWGqC6ppmhzVKntSDGKw7g1XFUAu3k
-    SQIDAQAB
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8sRX/kRu5JI93oHSV5lW
+    m+JIt1qRHG5P1QmCpFgtCZl7xCc8C654SGgS9wj9Dh2jE7AcJ9gCwfEh0VYAppbt
+    AAnZGnWGkdNZlA+0PmB5WqSEZf2sHAl5o/yzK4ymUjIQStErkIVI0dih901fJ/1m
+    gGsGoDsnLKSap6+h5MVAvwTITbBCuOYD5N97w3yJCzJXl4LtzmQcZPYMBr5w2dkx
+    EhJ74Em2z5CFATHLJdWYZkMtwYVCNkKBXx0rxgWuAFnU+ZRAVh/8l3cEWJbo6q9n
+    KzP29vQhOv7aGXmljX3hu4rYvEkMmouOG8qA7AjG6znQYUTBtNtucI0PUVkkq46J
+    /wIDAQAB
     -----END PUBLIC KEY-----
   private: |
     -----BEGIN RSA PRIVATE KEY-----
-    MIIEpAIBAAKCAQEAwJqKSw80L0/jnWhowvAXAb0i0IznZHmGYE5HZ03sTeRfH6nS
-    4JIUCO3Mn0VcQ1d4+4VyRnT52CVrtVwkP2Fnzs6uiiXAnkci0kiQqLcOYAf/6/18
-    X8pM3/ACuJINqJKXVUpxwPuqoA35DVjbRTDPp2VHvFSCX8OoNV632qscruPQbiyw
-    roQKaSnKftCw2k2KyrWgb8++Qofk5AYAQUlTfJ9VIK8clRGnFymZgUrGv5A5k7aL
-    Qcb8FM+4H0GgTSlD9sg1uUT9G2BCh34rYnm6ZsZnfn3ltXr//bJjRHULU3/k8wEm
-    mu2j5EjWGqC6ppmhzVKntSDGKw7g1XFUAu3kSQIDAQABAoIBAG9VJZmLuVOb72ue
-    3efJFtN3e/dna54lrSpgNWAep/jCiMXpya7sYc5jf0OVuWZn2tQxaEQX/BAYWXFl
-    SMKmUHY3/KZ4eiZD4noBXjVYU2PpW+MTDODmNJfByiDctC58RiQUOzsdfpy0VwGD
-    GoSdWXtezR+tDgvDMqlfDhHFlXf10P+fQ7KbdRbD19rauRni78ObF5qQtu/cH6j1
-    xF0VmGrr4rrUoj+jgDA3eIjT35DFqJ+ZBZLzvLxR3Wy16OmCUExr30oO36ILcE8w
-    QXhiQbZLE4zUCrCxivhVf4kW5owBS5upPqW3Yyh2ofA8Z9sEf8FUlvlE8BuNPOBB
-    k6OgrZ0CgYEA6m/DIkR2bs4P5vMmH2tRtOpTdQZaJOpQ86Ag9cJp4jttaealsCVE
-    XWM88CCO391ZbnXvpxi2Nz6zd9CyfQT7s1YEqVzb+lvpGz4U2CYp0Z/bE6aCmqpx
-    boEDVBhW1gCg5XAtD0+sXNR/RhceUdwM5msjMmC8xW6qbz69IQiiRI8CgYEA0lG+
-    8ZxUOjFfFT5NAj3ZPtNsW9N4oToU9GguLUV+cJGTPq+CYoxm52hxnruIpHjMyk93
-    4uyHRDDM+pyBoAS/pzGNVWiDFXXcU5sfAASAqIdBwkce45Cl5TAoNFsPeOoTFPeF
-    QszKyHcDCJyRXQewx19tCek4wFo8NK2818ZtpacCgYEAmeD8G10Gw9pb08Lbzhm6
-    St7YIuMlfj+THSaJG+cdaxKI0c9ECCeeBRJjaFZmkYiP8BJXWL2+tOpiEI4a6jbA
-    I8mdS7GY7m8vxeLs+aerIV4lBXPxHCYuSFNEZQmIzfUhpxgHa5pnT5NnaxE3pJGk
-    ogXG14VpwsnN8zEiITGymP8CgYEAx6/1q1DSZ64YqQLN+yLd8ViruUO/dNTAsI15
-    ymIA+sA9HXdmREsqKOxxdFR6GC7ZwfxRx5Lrm0L6W7fdGyFnFkdl+YGRc/7Dgl31
-    wP6FaX2CYgNEwKvF1yUyBwOuXQ9hrraUQChRIKRerP56xelXXvSrgo185KTIJPwQ
-    II617GECgYAksXxmIdYRy7BUrLNyWqaWtjBzaTMug60wUTrpeG6FjIMUwkgPa0CT
-    +VlxuaFzAUcuYEsr0A1mccQJ4gKDkZ6o4W/gRCjFMZKeIfvSk4ejxj31G+9Da76k
-    OXAJioCDswPdGMWF14REvWHUEHa9KYN7fPmrIBN6j9eTBFj/EnoWkg==
+    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
+    -----END RSA PRIVATE KEY-----
+- name: bernie madoff
+  public: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvlJg91ZooVOb4iqmlDq/
+    JxBFrMRwnMeJAgEks8/kwA3DNY7kxaWwhFxcV2voNdVliEYzhMASX1Y6yxR6zMGR
+    TayDMiGO+zCLYB6w7COGJ9nYifLq57hX+Oq06TZmQoDvd7eIRWmEmEc7Q89DiGQE
+    vW/BwDtg0jqUDvfaKE9LmQIy6m/Nh+qenHfX3DKwED7451+lMP9Iz55/T1aZ/KQm
+    RhdCy24O8dcthNm981/QJAQ8i4aTQHLkKZimHK+CFty8ns6urhq23mXUQEGHxSQf
+    uwN/1jslFkPnByUV/zcifwN7vQDTM4WBgFQl/rvut2SAdyiiZOMldOVezDny2TNt
+    dwIDAQAB
+    -----END PUBLIC KEY-----
+  private: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpAIBAAKCAQEAvlJg91ZooVOb4iqmlDq/JxBFrMRwnMeJAgEks8/kwA3DNY7k
+    xaWwhFxcV2voNdVliEYzhMASX1Y6yxR6zMGRTayDMiGO+zCLYB6w7COGJ9nYifLq
+    57hX+Oq06TZmQoDvd7eIRWmEmEc7Q89DiGQEvW/BwDtg0jqUDvfaKE9LmQIy6m/N
+    h+qenHfX3DKwED7451+lMP9Iz55/T1aZ/KQmRhdCy24O8dcthNm981/QJAQ8i4aT
+    QHLkKZimHK+CFty8ns6urhq23mXUQEGHxSQfuwN/1jslFkPnByUV/zcifwN7vQDT
+    M4WBgFQl/rvut2SAdyiiZOMldOVezDny2TNtdwIDAQABAoIBAQCRjltOjq1SxKjx
+    ngDsWMmczJsc+NfPb+NevxUc2CBwqZXkPjbE2mVXtXOCAKsFkQEn6di47FSgyUgJ
+    zM3mDxxbtVZZXsUFYykVCCPzVW/ixn8PcdMqCRhu7MITomEu94EtpBX6UCryc3fl
+    8nwJscTWRMR/imoQHnDhybj1H0AH8g0Z8HAXXxoR3iwOiHxpPw/scawvCx82ERkV
+    4GR/CEXMt3czbrTAgEvDmXjbb0XYfOXzZptlSfe8w3QdScnXIrSyqV1conU8fVbe
+    t1bUpSKYvvrbOUVxkWPxwjiyxuaLq19vgTXGDE6tXt9V4FBAM07cbnAakAeYNwrL
+    aSjlJ5vhAoGBAPUDXozt3wlXuzhukcyZS/8yQB/j560QkyM+LJlMIZ+xv4GmP6QD
+    rte4vxBoZH+kzJZEfI06uEDPJsVnyuulM2Ez4CrTEw7hiW0CWv+phezl7ic0JyMS
+    U+wiBeD1X1zn5nD3EmqPRFw9Q9Ik/b74ATpgP2wiilMho7mVmD6w+pfpAoGBAMbb
+    Le0IfqikPH7WqtVMNkGSten/aP2XJIiud/uQgIorjNJ8YK9lUj8J444WB1S/ZRga
+    QN/ZY3+OUjTgAuE76tDvZoWKg/6oZlc5aj9GRB2dwr0rOaBn8u9I6YETCdl/Hl/m
+    sA9DdLz6WE8//MYMsp57XAGYaIV3Ow0uHM3WEd5fAoGBAM0/CVGdYp189MUNOu3d
+    7R/WhIkybb04iUmYp9uzPud8CyUck2td+nWTudqQ2L9k2k13Ca91ZSxFXAE6NW65
+    cRUYU80MDIcGwAylUH2jESGma55DvhVPISZKSgptAnndedlf3/mMEoQCfnHnsvjq
+    4Hx6bCa1uJJzN6gbfPHnZ8UhAoGAAL5PBKTUfGLoyvyYdOWtCj+3KGHJDbGj9FLa
+    pfkbUejpxNusLNuvHAc4b46LhniUsytd9LhGU/K/Qe1YdWkY7qEGfBdReQE+KLNR
+    P11O4eF2GejwdTYORXC7Vr0wezyra2ZcYCI7bH1vGRS/KCph/I+vf14HfgA9G0aB
+    2w8iz/cCgYAUFC/CKd0KqKMk+a3BKF8bUMw10rVrbArcZgTOBLQoxYn5GUACLNOv
+    5rTOpFE626C31s+VER/oBDhXl4Pk/BtgwcQgxrhuDAXMZgyrvNq5mw6WGfEys3x1
+    2L4gXWi2LQtnXDLC8qct5VRRjtCRJTjHnWmZPlcJzWcBlGiPufnpjw==
     -----END RSA PRIVATE KEY-----
 payment:
-- stub.wasmBase64
-- test.wasmBase64
-- test111111111111.wasmBase64
-- testset.wasmBase64
-- uuuuudddd.wasmBase64
+- stub
+- test
 session:
-- 111111.wasmBase64
-- al;kdfja;lskdfj.wasmBase64
-- gggg.wasmBase64
-- jhjhjhj.wasmBase64
-- rocks.wasmBase64
-- session test.wasmBase64
-- test.wasmBase64
-- test111111111111.wasmBase64
-- uuuuu.wasmBase64
+- createVotingContracts
+- gggg
+- rocks
+- session test
+- test
+- vote
 savedDeploys:
 - name: savedDeploy88
   payment: stub
   session: rocks
   sessionArgs: a;ldkfjas;ldkfjasl;dfkjas;ldfkjas;ldfkjas;ldfkjas;ldfkjas;ldfkjasldfk
   paymentArgs: ''
-- name: savedCon1
-  payment: stub
-  paymentArgs: 
-  session: test
-  sessionArgs: 
-- name: ttt
-  payment: test
-  paymentArgs: ''
-  session: session test
-  sessionArgs: ''
 - name: ggg
   payment: testset
   paymentArgs: ''
   session: rocks
   sessionArgs: ''
+- name: vote
+  payment: stub
+  paymentArgs: ''
+  session: vote
+  sessionArgs: '1'
 savedQueries:
 - name: savedDeploy1
   block: xyz123

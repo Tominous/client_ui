@@ -1,7 +1,7 @@
 
 mode:         local   # if "remote", bind to 0.0.0.0
 serverPort:   4567    # ports <1024 require running with sudo
-envoyAddress: localhost
+envoyAddress: ec2-3-16-70-198.us-east-2.compute.amazonaws.com
 envoyPort:    9001
 
 assetRoot: "dist"   # root for html, js, css files
