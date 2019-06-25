@@ -33,6 +33,10 @@ export default class Services {
         return Http.post('contract/save', contractInfo);
     }
 
+    static saveQuery(data) {
+        return Http.post('query/save', data);
+    }
+
     static getQuery(data) {
         return Http.get('query', data);
     }

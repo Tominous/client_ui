@@ -450,7 +450,7 @@ class Contracts extends Component {
           </div>
         </div>
 
-        <div ref={this.saveContractModal} id="save-contract-modal" className="modal">
+        <div id="save-contract-modal" className="modal">
           <div className="modal-content">
             <div className="modal-header">
               <span className="close" onClick={this.closeModal}>&times;</span>
