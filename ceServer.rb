@@ -176,13 +176,6 @@ get( "/data" ) {
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
-# assets: css, js, images, etc.
-
-get( %r[(/.+)] ) { | path |                 # get anything other than / or /data
-   send_file( settings.assetRoot + path )   # path includes leading /
-}
-
-#--- 120 characters ----------------------------------------------------------------------------------------------------
 # generate new key pair and create new account (currently does not create accounts on the node)
 
 post( "/account" ) {
@@ -404,7 +397,7 @@ get( "/query" ) {
          keyBytes:   key,
          path:       path
       }
-      response = http.send_request( "PUT", "/query", query.to_json )
+      response = settings.http.send_request( "PUT", "/query", query.to_json )
       print( ">> query response: ", response.body ) if @@debug
       state    = response.body.match( /^result: *(.+)$/ )
       state    = ( state.nil? ) ? response.body : state[ 1 ]
@@ -454,6 +447,13 @@ post( "/query/save" ) {
 
 get( "/favicon.ico" ) {
    send_file( settings.assetRoot + "/images/favicon.ico" )
+}
+
+#--- 120 characters ----------------------------------------------------------------------------------------------------
+# assets: css, js, images, etc.
+
+get( %r[(/.+)] ) { | path |                 # get anything other than / or /data
+   send_file( settings.assetRoot + path )   # path includes leading /
 }
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
