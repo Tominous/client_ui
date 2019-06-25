@@ -10,6 +10,21 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center'
   },
+  columns: {
+    name: {
+      width: '80%',
+      padding: '10px',
+      color: 'rgb( 89, 89, 89 )',
+    },
+    view: {
+      padding: '10px',
+      color: 'rgb( 89, 89, 89 )',
+    },
+    delete: {
+      padding: '10px',
+      color: 'rgb( 89, 89, 89 )',
+    }
+  },
   content: {
     backgroundColor: 'white',
     border: 'solid 2px rgb( 200, 200, 200 )',
@@ -60,7 +75,14 @@ const styles = {
     backgroundColor:'rgb( 220, 220, 220 )',
     margin: '5px',
     color: 'rgb( 89, 89, 89 )'
-  }
+  },
+  grayRow: {
+    backgroundColor: 'rgb( 230, 236, 244 )',
+    margin:10,
+    display: 'flex',
+    borderRadius: 5,
+    justifyContent: 'space-between'    
+  },
 };
 
 class Query extends Component {
@@ -68,18 +90,21 @@ class Query extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      block: '',
       variant: 'address',
       key: '',
       path: '',
       queryName: '',
-      savedQueries: []
+      savedQueries: [],
+      savedQueryItem: {}
     };
     this.handleChange = this.handleChange.bind(this);
     this.saveQuery = this.saveQuery.bind(this);
     this.saveQueryModal = this.saveQueryModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleVariant = this.handleVariant.bind(this);
+    this.getQuery = this.getQuery.bind(this);
+    this.selectQuery = this.selectQuery.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
 
   }
   componentDidMount() {
@@ -103,7 +128,7 @@ class Query extends Component {
   }
 
   saveQueryModal() {
-    if (this.state.block==''||this.state.variant==''||this.state.key==''||this.state.path=='') {
+    if (this.state.variant==''||this.state.key==''||this.state.path=='') {
       alert("All fields are required!");
       return;
     }
@@ -119,13 +144,12 @@ class Query extends Component {
   }
 
   saveQuery() {
-    if (this.state.queryName=='') {
+    if (this.state.variant==''||this.state.key==''||this.state.path=='') {
       this.setState({validationError: true});
       return;
     }
     let queryInfo = {
       name: this.state.queryName,
-      block: this.state.block,
       variant: this.state.variant,
       key: this.state.key,
       path: this.state.path
@@ -136,9 +160,54 @@ class Query extends Component {
       this.setState({validationError: false});      
       that.closeModal();
       if (res.status) {
-        this.setState({outputList: queryInfo});
+        that.setState({savedQueries: queryInfo});
       }
     })
+  }
+
+  getQuery() {
+    if (this.state.queryName=='') {
+      alert( "’variant’, ‘key’, and ‘path’ must be specified")
+      return;
+    }
+    let queryInfo = {
+      keyVariant: this.state.variant,
+      keyBytes: this.state.key,
+      path: this.state.path
+    };
+    let that = this;
+    Services.getQuery(queryInfo)
+    .then(function(res){  
+      if (res.status) {
+        that.setState({outputList: res.result});
+      }
+    })
+  }
+
+  getQueryByItem(queryInfo) {
+    let that = this;
+    Services.getQuery(queryInfo)
+    .then(function(res){  
+      if (res.status) {
+        that.setState({outputList: res.result});
+      }
+    })
+  }
+
+  selectQuery(queryItem) {
+    this.setState({savedQueryItem: queryItem});
+  }
+
+  deleteItem(item, type, i) {
+    console.log(item, type, i);
+    // let that = this;
+    // Services.deletQuery({name: item, type: type})
+    // .then(function(res) {
+    //   console.log(res);
+    //   that.state.savedQueries.splice(i, 1);      
+    //   that.setState({savedQueries: that.state.savedQueries});
+    //   localStorage.setItem('data', JSON.stringify(that.state.data));
+    // })
   }
 
   render() {
@@ -148,10 +217,6 @@ class Query extends Component {
     return ( 
       <div style={styles.container}>
         <div className="form content">
-          <div style={styles.formItem}>
-            <div style={{...styles.label, justifyContent: 'flex-start'}}>block:</div>      
-            <input style={styles.input} name="block" value={this.state.block} onChange={this.handleChange}/>
-          </div>
           <div style={styles.formItem}>
             <div style={{...styles.label, justifyContent: 'flex-start'}}>key variant:</div>
               <SelectField
@@ -173,8 +238,11 @@ class Query extends Component {
             <input style={styles.input} name="path" value={this.state.path} onChange={this.handleChange}/>
           </div>
           <div style={{...styles.formItem, justifyContent: 'center'}}>
-            <div className="btn" style={styles.keyButton} onClick={()=>this.saveQueryModal()}>
+            <div className="btn" style={styles.keyButton} onClick={this.getQuery}>
               query
+            </div>
+            <div className="btn" style={styles.keyButton} onClick={()=>this.saveQueryModal()}>
+              save
             </div>
           </div>
           <div style={{...styles.label, justifyContent: 'center', width: '100%'}}>
@@ -189,6 +257,25 @@ class Query extends Component {
               )}
             </div>
           </div>
+
+            <div style={{...styles.label, justifyContent: 'center', width: '100%'}}>
+              saved
+            </div>
+            <div style={styles.content}>
+            {savedQueries.map((queryItem, i)=>
+              <div style={{...styles.grayRow, backgroundColor: 'rgb( 228, 228, 228 )'}}  className={queryItem.name==this.state.savedQueryItem.name?'selected':''} onClick={()=>this.selectQuery(queryItem)}>
+                <div style={styles.columns.name}>
+                  {queryItem.name}
+                </div>
+                <div className="btn" style={styles.columns.delete} onClick={()=>this.getQueryByItem(queryItem)}>
+                  deploy       
+                </div>
+                <div className="btn" style={styles.columns.delete} onClick={()=>this.deleteItem(queryItem.name, 'saved' ,i)}>
+                  del       
+                </div>
+              </div>            
+            )}
+            </div>
         </div>
 
         <div id="save-query-modal" className="modal">

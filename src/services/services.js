@@ -38,6 +38,6 @@ export default class Services {
     }
 
     static getQuery(data) {
-        return Http.get('query', data);
+        return Http.get(`query?keyVariant=${data.keyVariant}&keyBytes=${data.keyBytes}&path=${data.path}`);
     }
 }

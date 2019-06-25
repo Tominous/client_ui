@@ -1,6 +1,7 @@
+const ENDPOINT = 'http://localhost:4567'
 export default class Http {
     static get(url) {
-    return fetch(`/${url}`, {
+    return fetch(`${ENDPOINT}/${url}`, {
             credentials: 'same-origin',
             headers: {
                 'content-type': 'application/json'
@@ -9,7 +10,7 @@ export default class Http {
     }
 
     static post(url, body) {
-        return fetch(`/${url}`, {
+        return fetch(`${ENDPOINT}/${url}`, {
             method: 'post',
             credentials: 'same-origin',
             body: JSON.stringify(body),
@@ -20,7 +21,7 @@ export default class Http {
     }
 
     static put(url, body) {
-        return fetch(`/${url}`, {
+        return fetch(`${ENDPOINT}/${url}`, {
             method: 'put',
             credentials: 'same-origin',
             body: JSON.stringify(body),
@@ -31,7 +32,7 @@ export default class Http {
     }
 
     static delete(url, body) {
-        return fetch(`/${url}`, {
+        return fetch(`${ENDPOINT}/${url}`, {
             method: 'delete',
             credentials: 'same-origin',
             body: JSON.stringify(body),
