@@ -137,9 +137,22 @@ savedDeploys:
   paymentArgs: ''
   session: vote
   sessionArgs: '1'
+- name: another saved deploy
+  payment: test
+  paymentArgs: payment args
+  session: rocks
+  sessionArgs: session args
 savedQueries:
 - name: savedDeploy1
   block: xyz123
   variant: address
   key: '3030303030303030303030303030303030303030'
   path: vote0
+- name: saved query 2
+  variant: address
+  key: '3030303030303030303030303030303030303030'
+  path: vote/3
+- name: saved query 3
+  variant: address
+  key: '303030303030303030303030303030303030303'
+  path: vote/2
