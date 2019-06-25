@@ -392,14 +392,15 @@ get( "/query" ) {
       raise( CEexcept.new( "did not find block hash in put /show/blocks response", { result: "" } ) ) if blockHash.nil?
 
       query = {
-         blockHash:  blockHash,
+         blockHash:  blockHash[ 1 ],
          keyVariant: variant,
          keyBytes:   key,
          path:       path
       }
+      print( ">> query request: ", query.to_json ) if @@debug
       response = settings.http.send_request( "PUT", "/query", query.to_json )
       print( ">> query response: ", response.body ) if @@debug
-      state    = response.body.match( /^result: *(.+)$/ )
+      state    = response.body.match( /"result": *"(.+)"/ )
       state    = ( state.nil? ) ? response.body : state[ 1 ]
 
       {

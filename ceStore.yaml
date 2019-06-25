@@ -127,11 +127,6 @@ session:
 - test
 - vote
 savedDeploys:
-- name: savedDeploy88
-  payment: stub
-  session: rocks
-  sessionArgs: a;ldkfjas;ldkfjasl;dfkjas;ldfkjas;ldfkjas;ldfkjas;ldfkjas;ldfkjasldfk
-  paymentArgs: ''
 - name: vote
   payment: stub
   paymentArgs: ''
@@ -155,4 +150,8 @@ savedQueries:
 - name: saved query 3
   variant: address
   key: '303030303030303030303030303030303030303'
+  path: vote/2
+- name: bang tango
+  variant: address
+  key: '3030303030303030303030303030303030303030'
   path: vote/2
