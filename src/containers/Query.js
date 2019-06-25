@@ -166,7 +166,7 @@ class Query extends Component {
   }
 
   getQuery() {
-    if (this.state.queryName=='') {
+    if (this.state.variant==''||this.state.key==''||this.state.path=='') {
       alert( "’variant’, ‘key’, and ‘path’ must be specified")
       return;
     }
