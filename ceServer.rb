@@ -39,7 +39,7 @@ class CasperExplorer < Sinatra::Base
 # the following (outside any sinatra-specific block) should be accessible to all sinatra-specific blocks
 
 DEFAULT_CONFIG_FILE = "ceConfig.yaml"
-@@debug = false
+@@debug = true
 
 #--- 120 characters ----------------------------------------------------------------------------------------------------
 # run once at sinatra startup before any http requests are processed
@@ -101,12 +101,15 @@ helpers {
 
    def deploy( account, payment, paymentArgs, session, sessionArgs )   # deal with .wasmBas64 in filenames
 
-      session = settings.sessionLib + "/#{ session }.wasmBase64"
+      session = settings.storeRoot + "/sessionLib/#{ session }.wasmBase64"
       raise( CEexcept.new( "session contract does not exist: '#{ session }'" ) ) unless File.exist?( session )
-      payment = settings.paymentLib + "/#{ payment }.wasmBase64"
+      payment = settings.storeRoot + "/paymentLib/#{ payment }.wasmBase64"
       raise( CEexcept.new( "payment contract does not exist: '#{ payment }'" ) ) unless File.exist?( payment )
 
-      sessionArgs = 0x1000000 | ( ( sessionArgs.to_i & 0xFF ) << 24 )   # this only works for a single integer argument
+      unless sessionArgs.empty?
+         map = %w[ A B C D E F G ]
+         sessionArgs = "AQAAAAQAAAA" + map[ sessionArgs.to_i ] + "AAAA"
+      end
 
       deploy = {
          user:      "",
@@ -127,12 +130,14 @@ helpers {
          signature:    ""
       }
 
+      #print( "\ndeploy request body: ", deploy.to_json, "\n" ) if @@debug
       response = settings.http.send_request( "PUT", "/deploy", deploy.to_json )   # deploy
-      print( ">> #{ name } deploy response: ", response.body ) if @@debug
+      print( ">> deploy response: ", response.body ) if @@debug
       raise( CEexcept.new( "deploy failed: " + response.body ) ) unless response.body.match( /"success": *true/ )
       response = settings.http.send_request( "POST", "/block" )                # propose
-      print( ">> #{ name } propose response: ", response.body ) if @@debug
+      print( ">> propose response: ", response.body ) if @@debug
       raise( CEexcept.new( "propose failed: " + response.body ) ) unless response.body.match( /"success": *true/ )
+      true
    end
 
    #--- 120 characters -------------------------------------------------------------------------------------------------
@@ -327,11 +332,11 @@ post( "/contract/deploy" ) {
          req[ element ] = "" unless req.has_key?( element )
       }
 
-      out = deploy( req[ "account" ], req[ "payment" ], req[ "paymentArgs" ], req[ "session" ], req[ "sessionArgs" ] )
+      deploy( req[ "account" ], req[ "payment" ], req[ "paymentArgs" ], req[ "session" ], req[ "sessionArgs" ] )
 
       {
          status:    true,
-         message:   "account create deploy accepted"
+         message:   "success"
       }.to_json
 
    rescue CEexcept => except
@@ -384,19 +389,31 @@ delete( "/contract" ) {
 
 get( "/query" ) {
    begin
-      req   = JSON.parse( request.body.read )
-      valid = req.has_key?( "keyPairId" ) && req.has_key?( "balance" )
-      raise( CEexcept.new( "post /account request missing one or more of 'keyPairId', 'balance'" ) ) unless valid
-      out = settings.store.read( req[ "keyPairId" ] )
-      raise( CEexcept.new( "keyPairId '#{ req[ "keyPairId" ] }' does not exist" ) ) unless out.status
-      out = query( )
-      raise( CEexcept.new( out.msg ) ) unless out.status
+      variant = params[ "keyVariant" ]   # these access the query string in the URL
+      key     = params[ "keyBytes"   ]
+      path    = params[ "path"       ]
+      invalid = variant.empty? || key.empty? || path.empty?
+      raise( CEexcept.new( "get /query missing one or more of 'keyVariant', 'keyBytes', 'path'" ) ) if invalid
+      response = settings.http.send_request( "PUT", "/show/blocks", { depth: 1 }.to_json )   # get most recent block
+      print( ">> showBlocks response: ", response.body ) if @@debug
+      blockHash = response.body.match( /"blockHash": *"([^"]+)"/ )   # returns an array of objects; this should match the first
+      raise( CEexcept.new( "did not find block hash in put /show/blocks response" ) ) if blockHash.nil?
+
+      query = {
+         blockHash:  blockHash,
+         keyVariant: variant,
+         keyBytes:   key,
+         path:       path
+      }
+      response = http.send_request( "PUT", "/query", query.to_json )
+      print( ">> query response: ", response.body ) if @@debug
+
       {
-         result: out.result,
+         result: response.body,
       }.to_json
 
    rescue CEexcept => except
-      print( "\n**** #{ except.message }: #{ req }\n" )   # print error message to console
+      print( "\n**** #{ except.message }: #{ variant }; #{ key }; #{ path }\n" )   # print error message to console
       [ 400, [ except.payload ] ]   # rack-compatible return value; the body (second) element must respond to each()
    end
 }
