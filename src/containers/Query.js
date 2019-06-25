@@ -95,7 +95,8 @@ class Query extends Component {
       path: '',
       queryName: '',
       savedQueries: [],
-      savedQueryItem: {}
+      savedQueryItem: {},
+      output: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.saveQuery = this.saveQuery.bind(this);
@@ -179,7 +180,7 @@ class Query extends Component {
     Services.getQuery(queryInfo)
     .then(function(res){  
       if (res.status) {
-        that.setState({outputList: res.result});
+        that.setState({output: res.result});
       }
     })
   }
@@ -189,7 +190,7 @@ class Query extends Component {
     Services.getQuery(queryInfo)
     .then(function(res){  
       if (res.status) {
-        that.setState({outputList: res.result});
+        that.setState({output: res.result});
       }
     })
   }
@@ -212,7 +213,7 @@ class Query extends Component {
 
   render() {
 
-    const {savedQueries} = this.state;
+    const {savedQueries, output} = this.state;
 
     return ( 
       <div style={styles.container}>
@@ -250,11 +251,7 @@ class Query extends Component {
           </div>
           <div style={{height: 177, border: 'solid #AAA', borderRadius: 10, overflow: 'auto'}}> 
             <div style={styles.content}>
-              {savedQueries.map(query=>
-                <div style={{...styles.grayRow, backgroundColor: 'rgb( 228, 228, 228 )'}}>
-                    {query.name}
-                </div>            
-              )}
+              {output}
             </div>
           </div>
 
