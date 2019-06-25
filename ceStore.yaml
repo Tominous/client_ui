@@ -122,7 +122,6 @@ payment:
 - test
 session:
 - createVotingContracts
-- gggg
 - rocks
 - session test
 - test
@@ -133,11 +132,6 @@ savedDeploys:
   session: rocks
   sessionArgs: a;ldkfjas;ldkfjasl;dfkjas;ldfkjas;ldfkjas;ldfkjas;ldfkjas;ldfkjasldfk
   paymentArgs: ''
-- name: ggg
-  payment: testset
-  paymentArgs: ''
-  session: rocks
-  sessionArgs: ''
 - name: vote
   payment: stub
   paymentArgs: ''

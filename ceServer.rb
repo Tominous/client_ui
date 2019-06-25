@@ -106,7 +106,7 @@ helpers {
       payment = settings.storeRoot + "/paymentLib/#{ payment }.wasmBase64"
       raise( CEexcept.new( "payment contract does not exist: '#{ payment }'" ) ) unless File.exist?( payment )
 
-      unless sessionArgs.empty?
+      unless sessionArgs.empty?      # this is a special case for single integer arguments
          map = %w[ A B C D E F G ]
          sessionArgs = "AQAAAAQAAAA" + map[ sessionArgs.to_i ] + "AAAA"
       end
@@ -130,7 +130,6 @@ helpers {
          signature:    ""
       }
 
-      #print( "\ndeploy request body: ", deploy.to_json, "\n" ) if @@debug
       response = settings.http.send_request( "PUT", "/deploy", deploy.to_json )   # deploy
       print( ">> deploy response: ", response.body ) if @@debug
       raise( CEexcept.new( "deploy failed: " + response.body ) ) unless response.body.match( /"success": *true/ )
@@ -243,8 +242,8 @@ delete( "/account" ) {
       }
 
       {
-         status:    true,
-         message:   "success"
+         status:  true,
+         message: "success"
       }.to_json
 
    rescue CEexcept => except
@@ -310,8 +309,8 @@ post( "/contract/save" ) {
       }
 
       {
-         status:    true,
-         message:   "success"
+         status:  true,
+         message: "success"
       }.to_json
 
    rescue CEexcept => except
@@ -335,8 +334,8 @@ post( "/contract/deploy" ) {
       deploy( req[ "account" ], req[ "payment" ], req[ "paymentArgs" ], req[ "session" ], req[ "sessionArgs" ] )
 
       {
-         status:    true,
-         message:   "success"
+         status:  true,
+         message: "success"
       }.to_json
 
    rescue CEexcept => except
@@ -375,8 +374,8 @@ delete( "/contract" ) {
       }
 
       {
-         status:    true,
-         message:   "success"
+         status:  true,
+         message: "success"
       }.to_json
 
    rescue CEexcept => except
@@ -393,11 +392,11 @@ get( "/query" ) {
       key     = params[ "keyBytes"   ]
       path    = params[ "path"       ]
       invalid = variant.empty? || key.empty? || path.empty?
-      raise( CEexcept.new( "get /query missing one or more of 'keyVariant', 'keyBytes', 'path'" ) ) if invalid
+      raise( CEexcept.new( "get /query missing one or more of 'keyVariant', 'keyBytes', 'path'", { result: "" } ) ) if invalid
       response = settings.http.send_request( "PUT", "/show/blocks", { depth: 1 }.to_json )   # get most recent block
       print( ">> showBlocks response: ", response.body ) if @@debug
       blockHash = response.body.match( /"blockHash": *"([^"]+)"/ )   # returns an array of objects; this should match the first
-      raise( CEexcept.new( "did not find block hash in put /show/blocks response" ) ) if blockHash.nil?
+      raise( CEexcept.new( "did not find block hash in put /show/blocks response", { result: "" } ) ) if blockHash.nil?
 
       query = {
          blockHash:  blockHash,
@@ -407,13 +406,46 @@ get( "/query" ) {
       }
       response = http.send_request( "PUT", "/query", query.to_json )
       print( ">> query response: ", response.body ) if @@debug
+      state    = response.body.match( /^result: *(.+)$/ )
+      state    = ( state.nil? ) ? response.body : state[ 1 ]
 
       {
-         result: response.body,
+         status:  true,
+         message: "success",
+         result:  state
       }.to_json
 
    rescue CEexcept => except
       print( "\n**** #{ except.message }: #{ variant }; #{ key }; #{ path }\n" )   # print error message to console
+      [ 400, [ except.payload ] ]   # rack-compatible return value; the body (second) element must respond to each()
+   end
+}
+
+#--- 120 characters ----------------------------------------------------------------------------------------------------
+
+post( "/query/save" ) {
+   begin
+      req   = JSON.parse( request.body.read )
+      valid = req.has_key?( "name" ) && req.has_key?( "variant" ) && req.has_key?( "key" )&& req.has_key?( "path" )
+      raise( CEexcept.new( "post /query/save request missing one or more of 'name', 'variant', 'key', 'path'" ) ) unless valid
+
+      @@store[ "savedQueries" ].delete_if { | element |       # delete any existing saved query with the same name
+         element[ "name" ] == req[ "name" ]
+      }
+
+      @@store[ "savedQueries" ] << req
+
+      File.open( settings.store, "w" ) { | f |
+         YAML.dump( @@store, f )
+      }
+
+      {
+         status:  true,
+         message: "success"
+      }.to_json
+
+   rescue CEexcept => except
+      print( "\n**** #{ except.message }: #{ req }\n" )   # print error message to console
       [ 400, [ except.payload ] ]   # rack-compatible return value; the body (second) element must respond to each()
    end
 }
