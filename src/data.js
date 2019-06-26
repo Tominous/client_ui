@@ -2,7 +2,7 @@ const data = {
   menus: [
     { text: 'accounts', icon: '', link: '/accounts' },
     { text: 'network', icon: '', link: '/network' },
-    { text: 'contracts', icon: '', link: '/contracts' },
+    { text: 'deploy', icon: '', link: '/deploy' },
     { text: 'query', icon: '', link: '/query' },
     { text: 'explore dag', icon: '', link: '/explore-dag' },
     { text: 'settings', icon: '', link: '/settings' },

@@ -18,7 +18,7 @@ export default (
       <Route path="landing" component={Landing}/>
       <Route path="accounts" component={Accounts}/>
       <Route path="network" component={Network}/>
-      <Route path="contracts" component={Contracts}/>
+      <Route path="deploy" component={Contracts}/>
       <Route path="docs" component={Docs}/>
       <Route path="explore-dag" component={ExploreDag}/>
       <Route path="query" component={Query}/>

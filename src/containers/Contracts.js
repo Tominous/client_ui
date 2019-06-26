@@ -233,8 +233,10 @@ class Contracts extends Component {
   }
 
   selectContract(contractItem) {
-    this.setState({sessionItem: ''});    
-    this.setState({paymentItem: ''});    
+    this.setState({sessionItem: contractItem.session});    
+    this.setState({paymentItem: contractItem.payment});
+    this.setState({paymentArg: contractItem.paymentArgs});
+    this.setState({sessionArg: contractItem.sessionArgs});
     this.setState({savedContractItem: contractItem});
   }
 

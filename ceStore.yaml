@@ -155,3 +155,11 @@ savedQueries:
   variant: address
   key: '3030303030303030303030303030303030303030'
   path: vote/2
+- name: qqqqq
+  variant: address
+  key: sss
+  path: fdfd
+- name: xxxx
+  variant: address
+  key: sss
+  path: fdfd

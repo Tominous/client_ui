@@ -158,10 +158,11 @@ class Query extends Component {
     let that = this;
     Services.saveQuery(queryInfo)
     .then(function(res){
-      this.setState({validationError: false});      
+      that.setState({validationError: false});      
       that.closeModal();
       if (res.status) {
-        that.setState({savedQueries: queryInfo});
+        that.state.savedQueries.push(queryInfo);
+        that.setState({savedQueries: that.state.savedQueries});
       }
     })
   }
